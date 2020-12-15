@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+	<Properties>
+		<Property name="LOG_PATTERN">
+			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName}
+			--- [%15.15t] %-40.40c{1.} : %m%n%ex
+		</Property>
+	</Properties>
+	<!-- Console Appender -->
+	<Appenders>
+		<Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+	</Appenders>
+
+	<!-- Rolling File Appender -->
+	<RollingFile name="FileAppender" fileName="logs/task-manager.log"
+		filePattern="logs/task-manager-%d{yyyy-MM-dd}-%i.log">
+		<PatternLayout>
+			<Pattern>${LOG_PATTERN}</Pattern>
+		</PatternLayout>
+		<Policies>
+			<SizeBasedTriggeringPolicy size="10MB" />
+		</Policies>
+		<DefaultRolloverStrategy max="10" />
+	</RollingFile>
+	<Loggers>
+		<Logger name="com.fsd.taskmanager" level="debug" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+    		<level value="debug" />
+		</Logger>
+		<Root level="info">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppenderr" />
+		</Root>
+	</Loggers>
+</Configuration>
