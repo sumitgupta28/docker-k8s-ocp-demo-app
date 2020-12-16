@@ -17,6 +17,12 @@ public class Employee {
 	private String lastName;
 	@Column(name="EMAIL_ID") 
 	private String emailId;
+	
+	
+	
+
+	public Employee() {
+	}
 
 	public Employee(String firstName, String lastName, String emailId) {
 		this.firstName = firstName;
