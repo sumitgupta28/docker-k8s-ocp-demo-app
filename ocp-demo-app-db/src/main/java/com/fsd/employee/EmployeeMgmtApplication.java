@@ -24,7 +24,7 @@ public class EmployeeMgmtApplication {
 				{ "User 2", "LastName 1", "user2@mail.com" } };
 		return args -> {
 			Stream.of(data).forEach(array -> {
-				Employee kayak = new Employee(array[0], array[1], array[3]);
+				Employee kayak = new Employee(array[0], array[1], array[2]);
 				repository.save(kayak);
 			});
 			repository.findAll().forEach(System.out::println);
