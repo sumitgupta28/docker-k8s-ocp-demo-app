@@ -2,6 +2,8 @@ spring:
     
   datasource:
     url: jdbc:postgresql://postgresql:5432/sampledb
+    password: ${POSTGRESQL_USER}
+    username: ${POSTGRESQL_PASSWORD}
 
   jpa:
     properties:
