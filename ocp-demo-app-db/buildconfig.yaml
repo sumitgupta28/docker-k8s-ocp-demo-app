@@ -1,0 +1,24 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: ocp-demo-app-git
+  namespace: learning
+spec:
+  source:
+    git:
+      ref: master
+      uri: 'https://github.com/sumitgupta28/ocp-demo-app.git'
+    type: Git
+    contextDir: /ocp-demo-app-db
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'java:8'
+        namespace: openshift
+      env: []
+  triggers:
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange

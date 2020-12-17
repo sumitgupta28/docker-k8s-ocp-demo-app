@@ -1,0 +1,61 @@
+﻿kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: ocp-demo-app-git
+  namespace: learning
+  selfLink: >-
+    /apis/build.openshift.io/v1/namespaces/learning/buildconfigs/ocp-demo-app-git
+  uid: 88d1373c-7358-47b4-a0fe-9f456f9c15f6
+  resourceVersion: '345884'
+  creationTimestamp: '2020-12-16T03:37:28Z'
+  labels:
+    app: ocp-demo-app-git
+    app.kubernetes.io/component: ocp-demo-app-git
+    app.kubernetes.io/instance: ocp-demo-app-git
+    app.kubernetes.io/name: java
+    app.kubernetes.io/part-of: ocp-demo-app-git-app
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: '8'
+  annotations:
+    app.openshift.io/vcs-ref: master
+    app.openshift.io/vcs-uri: 'https://github.com/sumitgupta28/ocp-demo-app.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'ocp-demo-app-git:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:8'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/sumitgupta28/ocp-demo-app.git'
+    contextDir: /ocp-demo-app-db
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: ocp-demo-app-git-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: ocp-demo-app-git-github-webhook-secret
+    - type: ImageChange
+      imageChange:
+        lastTriggeredImageID: >-
+          image-registry.openshift-image-registry.svc:5000/openshift/java@sha256:b9f6d504802548998e3ba4eac61b09d5065548c6eab158b704da4b02f5a6684e
+    - type: ConfigChange
+  runPolicy: Serial
+status:
+  lastVersion: 3
