@@ -1,0 +1,29 @@
+spring:  
+    
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/sampledb
+    password: ${POSTGRESQL_USER}
+    username: ${POSTGRESQL_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        generate-ddl: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: true
+    ddl-auto: create-drop 
+    
+  kafka:
+    consumer:
+      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+   
