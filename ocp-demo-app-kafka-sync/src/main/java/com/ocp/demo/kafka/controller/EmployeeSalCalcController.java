@@ -28,7 +28,7 @@ public class EmployeeSalCalcController {
 
 	private ReplyingKafkaTemplate<String, Employee, EmployeeResult> replyingKafkaTemplate;
 
-	@Value("${kafka.reuest.topic}")
+	@Value("${kafka.request.topic}")
 	private String requestTopic;
 
 	@Autowired
