@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+
+kafka:
+ request:
+   topic: request-topic
+ reply:
+   topic: response-topic
+ group:
+   id: result_group
+      
+
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      group-id: result_group
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
