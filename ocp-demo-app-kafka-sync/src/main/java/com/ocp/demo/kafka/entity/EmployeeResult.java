@@ -10,15 +10,11 @@ public class EmployeeResult {
 		this.name = name;
 		this.sal = sal;
 	}
-	
-	
 
 	public EmployeeResult() {
 		super();
 
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -34,6 +30,11 @@ public class EmployeeResult {
 
 	public void setSal(String sal) {
 		this.sal = sal;
+	}
+
+	@Override
+	public String toString() {
+		return "EmployeeResult [name=" + name + ", sal=" + sal + "]";
 	}
 
 }

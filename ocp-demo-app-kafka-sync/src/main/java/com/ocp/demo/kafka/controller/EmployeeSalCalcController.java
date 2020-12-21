@@ -1,15 +1,19 @@
 package com.ocp.demo.kafka.controller;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.internals.RecordHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +35,9 @@ public class EmployeeSalCalcController {
 	@Value("${kafka.request.topic}")
 	private String requestTopic;
 
+	@Value("${kafka.reply.topic}")
+	private String replyTopic;
+
 	@Autowired
 	EmployeeSalCalcController(ReplyingKafkaTemplate<String, Employee, EmployeeResult> replyingKafkaTemplate) {
 		this.replyingKafkaTemplate = replyingKafkaTemplate;
@@ -41,10 +48,24 @@ public class EmployeeSalCalcController {
 	public ResponseEntity<EmployeeResult> calSal(@RequestBody Employee employee)
 			throws InterruptedException, ExecutionException {
 
-		ProducerRecord<String, Employee> record = new ProducerRecord<>(requestTopic, null, "STD001", employee);
-		RequestReplyFuture<String, Employee, EmployeeResult> future = replyingKafkaTemplate.sendAndReceive(record);
-		ConsumerRecord<String, EmployeeResult> response = future.get();
-		return new ResponseEntity<>(response.value(), HttpStatus.OK);
+		// create producer record
+		ProducerRecord<String, Employee> record = new ProducerRecord<String, Employee>(requestTopic, employee);
+		// set reply topic in header
+		record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, replyTopic.getBytes()));
+
+		RequestReplyFuture<String, Employee, EmployeeResult> sendAndReceive = replyingKafkaTemplate.sendAndReceive(record,
+				Duration.ofSeconds(10));
+
+		// confirm if producer produced successfully
+		SendResult<String, Employee> sendResult = sendAndReceive.getSendFuture().get();
+		
+		//print all headers
+		sendResult.getProducerRecord().headers().forEach(header -> System.out.println(header.key() + ":" + header.value().toString()));
+		
+		// get consumer record
+		ConsumerRecord<String, EmployeeResult> consumerRecord = sendAndReceive.get();
+
+		return new ResponseEntity<>(consumerRecord.value(), HttpStatus.OK);
 
 	}
 }
