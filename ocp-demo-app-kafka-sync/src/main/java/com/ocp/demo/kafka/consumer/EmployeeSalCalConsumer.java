@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 
 import com.ocp.demo.kafka.entity.Employee;
@@ -16,6 +17,7 @@ public class EmployeeSalCalConsumer {
 	private static final Logger logger = Logger.getLogger(EmployeeSalCalConsumer.class.getName());
 
 	@KafkaListener(topics = "${kafka.request.topic}", groupId = "${kafka.group.id}")
+	@SendTo
 	public EmployeeResult consume(Employee employee) throws IOException {
 		logger.info(String.format("Consumed message -> %s", employee.toString()));
 		String calSal = String.valueOf((new Random()).nextInt(50000)) + "$";
