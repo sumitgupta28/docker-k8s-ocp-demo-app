@@ -1,4 +1,4 @@
-package com.gauravg.demo;
+package com.ocp.demo.kafka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

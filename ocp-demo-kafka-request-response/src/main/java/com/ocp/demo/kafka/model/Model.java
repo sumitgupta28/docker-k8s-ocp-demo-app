@@ -1,5 +1,5 @@
 
-package com.gauravg.model;
+package com.ocp.demo.kafka.model;
 
 import java.util.HashMap;
 import java.util.Map;

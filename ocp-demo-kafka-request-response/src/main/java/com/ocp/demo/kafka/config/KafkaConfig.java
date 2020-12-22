@@ -1,4 +1,4 @@
-package com.gauravg.config;
+package com.ocp.demo.kafka.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.gauravg.model.Model;
+import com.ocp.demo.kafka.model.Model;
 
 @Configuration
 public class KafkaConfig {

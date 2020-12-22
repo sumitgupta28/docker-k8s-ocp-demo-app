@@ -1,4 +1,4 @@
-package com.gauravg.controller;
+package com.ocp.demo.kafka.controller;
 
 import java.util.concurrent.ExecutionException;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gauravg.model.Model;
+import com.ocp.demo.kafka.model.Model;
 
 @RestController
 public class SumController {

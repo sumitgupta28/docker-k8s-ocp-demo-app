@@ -1,10 +1,10 @@
-package com.gauravg.consumer;
+package com.ocp.demo.kafka.consumer;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import com.gauravg.model.Model;
+import com.ocp.demo.kafka.model.Model;
 
 
 @Component
