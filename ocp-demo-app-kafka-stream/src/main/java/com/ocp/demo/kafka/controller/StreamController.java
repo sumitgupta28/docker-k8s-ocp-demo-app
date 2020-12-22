@@ -1,5 +1,6 @@
 package com.ocp.demo.kafka.controller;
 
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,7 @@ public class StreamController {
 	public String publishMessageComplextType(@RequestBody ChatMessage payload) {
 
 		payload.setTime(System.currentTimeMillis());
-		producer.getMysource().output().send(MessageBuilder.withPayload(payload).setHeader("type", "chat").setHeader("content-type", "application/json").build());
-
+		producer.getMysource().output().send(MessageBuilder.withPayload(payload).setHeader("type", "chat").setHeader(MessageHeaders.CONTENT_TYPE, "application/json").build());
 		return "success";
 	}
 
