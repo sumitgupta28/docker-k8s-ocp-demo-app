@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -16,14 +19,33 @@ import io.swagger.annotations.ApiParam;
 public class HelloService {
 
 	@RequestMapping(method = RequestMethod.GET, path = "/hello")
-	@ApiOperation("Return Hello OCP")
+	@ApiOperation(value = "Return Hello OCP", notes = "Return Hello OCP")
+	// @formatter:off
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Some Sample Message"),
+			@ApiResponse(code = 404, message = "Some Sample Message"),
+			@ApiResponse(code = 400, message = "Some Sample Message"),
+			@ApiResponse(code = 500, message = "Some Sample Message") })
+	// @formatter:on
 	public String hello() {
 		return "hello OCP";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/hello/{name}")
-	@ApiOperation("Return Hello + Name")
-	public String getEmployeeById(@ApiParam("name.") @PathVariable(value = "name") Integer name) {
+	@ApiOperation(value = "Return Hello + Name", notes = "Return Hello + Name")
+	// @formatter:off
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Some Sample Message"),
+			@ApiResponse(code = 404, message = "Some Sample Message", 
+			responseHeaders = {
+					@ResponseHeader(name = "Privacy-Declaration"), 
+					@ResponseHeader(name = "X-Request-ID"),
+					@ResponseHeader(name = "X-Correlation-ID"), 
+					@ResponseHeader(name = "API-Version"),
+					@ResponseHeader(name = "Backend-Version") }),
+			@ApiResponse(code = 400, message = "Some Sample Message"),
+			@ApiResponse(code = 500, message = "Some Sample Message") })
+	// @formatter:on
+
+	public String helloName(@ApiParam("name.") @PathVariable(value = "name") String name) {
 		return "hello " + name;
 	}
 }
