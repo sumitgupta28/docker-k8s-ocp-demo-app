@@ -24,8 +24,8 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiEndPointsInfo() {
-		return new ApiInfoBuilder().title("Spring Boot REST API").description("Employee Management REST API")
-				.contact(new Contact("Sumit Gupta", "www.fsd-learn.net", "sumitgupta28@gmail.com")).version("1.0.0")
-				.build();
+		return new ApiInfoBuilder().title("OCP Demo Application").description("OCP Demo Application")
+				.contact(new Contact("Sumit Gupta", "www.ocp-learning-fake.net", "sumitgupta28@gmail.com"))
+				.version("1.0.0").build();
 	}
 }

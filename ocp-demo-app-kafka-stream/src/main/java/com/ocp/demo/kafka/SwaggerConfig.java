@@ -19,13 +19,14 @@ public class SwaggerConfig {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.ocp.demo.kafka")).paths(PathSelectors.any())
-				.build().apiInfo(apiEndPointsInfo());
+				.apis(RequestHandlerSelectors.basePackage("com.ocp.demo.kafka")).paths(PathSelectors.any()).build()
+				.apiInfo(apiEndPointsInfo());
 	}
 
 	private ApiInfo apiEndPointsInfo() {
 		return new ApiInfoBuilder().title("Kafka Stream Demo").description("Kafka Stream Demo REST API")
-				.contact(new Contact("Sumit Gupta", "www.something.net", "sumitgupta28@gmail.com")).version("1.0.0")
-				.build();
+				.contact(new Contact("Sumit Gupta", "www.ocp-learning-fake.net", "sumitgupta28@gmail.com"))
+				.version("1.0.0").build();
+
 	}
 }

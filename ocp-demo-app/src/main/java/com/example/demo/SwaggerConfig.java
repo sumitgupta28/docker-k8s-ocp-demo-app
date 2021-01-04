@@ -1,4 +1,4 @@
-package com.fsd.employee;
+package com.example.demo;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +19,13 @@ public class SwaggerConfig {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.fsd.employee.controller")).paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.example.demo")).paths(PathSelectors.any())
 				.build().apiInfo(apiEndPointsInfo());
 	}
 
 	private ApiInfo apiEndPointsInfo() {
 		return new ApiInfoBuilder().title("OCP Demo Application").description("OCP Demo Application")
-				.contact(new Contact("Sumit Gupta", "www.ocp-learning-fake.net", "sumitgupta28@gmail.com"))
-				.version("1.0.0").build();
+				.contact(new Contact("Sumit Gupta", "www.ocp-learning-fake.net", "sumitgupta28@gmail.com")).version("1.0.0")
+				.build();
 	}
 }
