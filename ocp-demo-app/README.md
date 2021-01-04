@@ -16,6 +16,24 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app and run below command
 ![build](images/build.JPG "build") 
 
 
+here the build is 2 step process. first build the application and then build the image. 
+
+this lines will first do the maven build
+
+	FROM maven:3.6.0-jdk-8-slim AS build
+	COPY src /usr/src/app/src
+	COPY pom.xml /usr/src/app
+	RUN mvn -f /usr/src/app/pom.xml clean package
+
+this lines will use the jar created by build to make docker image with open-jdk-jre.
+	
+	FROM openjdk:8-jre
+	COPY --from=build /usr/src/app/target/ocp-demo-app*SNAPSHOT.jar /usr/app/ocp-demo-app.jar 
+	EXPOSE 8080
+	ENTRYPOINT ["java","-jar","/usr/app/ocp-demo-app.jar"]
+
+
+
 list the container 
 
 	$docker images
