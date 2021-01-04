@@ -1,0 +1,20 @@
+﻿kind: Build
+apiVersion: build.openshift.io/v1
+metadata:
+  name: ocp-demo-app-git-1
+  namespace: test1
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'ocp-demo-app-git:latest'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  serviceAccount: builder
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/sumitgupta28/ocp-demo-app.git'
+    contextDir: /ocp-demo-app

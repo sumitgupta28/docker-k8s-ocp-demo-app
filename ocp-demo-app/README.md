@@ -55,3 +55,10 @@ Push Image to docker hub , Here before push you need to login to docker hub usin
 	$docker image push sumitgupta28/ocp-demo-app:latest
 
 ![build](images/push.JPG) 
+
+
+Verify docker hub
+
+![build](images/docker-hub.JPG) 
+
+
