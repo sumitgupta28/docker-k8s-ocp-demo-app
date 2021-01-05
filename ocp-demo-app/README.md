@@ -64,7 +64,9 @@ Verify docker hub
 
 ## Using Kubernetes to run the app. 
 
-Since now we have image pushed into docker hub so same image can be used to run the kubernetes [k8s] Deployment and Services. 
+Since now we have image pushed into docker hub, so same image can be used to run the kubernetes [k8s] Deployment and Services. 
+
+Here is the example Deployment and Service.
 
 [deployment.yaml]
 

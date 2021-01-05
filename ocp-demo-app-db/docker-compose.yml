@@ -1,0 +1,24 @@
+version: '3'
+services:
+  postgresql:
+    image: "postgres" # use latest official postgres version
+    environment:
+      POSTGRES_DB: sample_database
+      POSTGRES_USER: postgresql_user
+      POSTGRES_PASSWORD: postgresql_password
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
+  
+  ocp-demo-app-db:
+    build: .
+    container_name: ocp-demo-app-db
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgresql
+    environment:
+      - POSTGRESQL_DB_NAME=sample_database
+      - POSTGRESQL_USER=postgresql_user
+      - POSTGRESQL_PASSWORD=postgresql_password
