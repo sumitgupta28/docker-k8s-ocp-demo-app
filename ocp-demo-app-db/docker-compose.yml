@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   postgresql:
-    image: 'postgres:13.1-alpine' # use latest official postgres version
+    image: 'postgres:13.1-alpine' 
     container_name: postgresql
     environment:
      - POSTGRES_DB=sample_database
