@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: zookeeper
-        image: pharosproduction/zookeeper_k8s:v4        
-        ports:
-          - containerPort: 2181
-
+        image: bitnami/zookeeper:latest      
+        env:
+          - name: ALLOW_ANONYMOUS_LOGIN # This is only recommended for development.
+            value: yes
           
