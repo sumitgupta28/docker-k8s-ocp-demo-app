@@ -17,5 +17,5 @@ spec:
         image: bitnami/zookeeper:latest      
         env:
           - name: ALLOW_ANONYMOUS_LOGIN # This is only recommended for development.
-            value: yes
+            value: "yes"
           
