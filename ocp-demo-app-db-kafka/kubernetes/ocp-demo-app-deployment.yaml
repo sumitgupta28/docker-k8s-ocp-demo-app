@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocp-demo-app-db
+spec:
+  selector:
+    matchLabels:
+      app: ocp-demo-app-db
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: ocp-demo-app-db
+    spec:
+      containers:
+      - name: ocp-demo-app-db
+        image: sumitgupta28/ocp-demo-app-db:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: POSTGRESQL_DB_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: postgres-configuration
+                key: POSTGRES_DB        
+                
+          - name: POSTGRESQL_USER
+            valueFrom: 
+              configMapKeyRef:
+                name: postgres-configuration        
+                key: POSTGRES_USER        
+                
+          - name: POSTGRESQL_PASSWORD
+            valueFrom: 
+              configMapKeyRef:
+                name: postgres-configuration        
+                key: POSTGRES_PASSWORD        
+                
+                
+                

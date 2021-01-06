@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: zookeeper
+  template:
+    metadata:
+      labels:
+        component: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: pharosproduction/zookeeper_k8s:v4        
+        ports:
+          - containerPort: 2181
+
+          
