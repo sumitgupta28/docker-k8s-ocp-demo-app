@@ -3,15 +3,14 @@
 
 *	this is simple application with curd api's for employee model.
 
-	`
+	```
 	  {
 	    "emailId": "string",
 	    "firstName": "string",
 	    "id": 0,
 	    "lastName": "string"
 	  }
-	
-	`
+	```
 *	Here are the list of api's 
 
 ![API's](images/emp-service-apis.JPG) 
