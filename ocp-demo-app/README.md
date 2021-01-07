@@ -1,11 +1,13 @@
 # OCP Demo APP
 
-
 * this is simple application with 2 api's "/api/hello" and "/api/hello/{name}".
 * just to demo the multi stage docker build for an java application
 * run the container and validate it
 * push the image into docker hub
 * deploy application into openshift via docker image / docker file and s2i strategy.
+
+
+
 
 ## Build docker image and run
 
@@ -63,6 +65,10 @@ Verify docker hub
 
 
 ## Using Kubernetes to run the app. 
+
+
+![ocp-demo-app](images/ocp-demo-app-1.png) 
+
 
 Since now we have image pushed into docker hub, so same image can be used to run the kubernetes [k8s] Deployment and Services. 
 
