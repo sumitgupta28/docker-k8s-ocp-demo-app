@@ -4,7 +4,7 @@ server:
 spring:
   kafka:
     consumer:
-      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      bootstrap-servers: ${KAFKA_ENDPOINT}
       group-id: group_id
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

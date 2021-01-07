@@ -25,10 +25,13 @@ services:
       
   ocp-demo-app-db:
     build: .
-    container_name: ocp-demo-app-db-kafka
+    container_name: ocp-demo-app-kafka
     depends_on:
       - zookeeper-server
       - kafka-server-1
 
     ports:
       - 8080:8080
+    environment:
+      - KAFKA_ENDPOINT="PLAINTEXT://localhost:9092"
+      
