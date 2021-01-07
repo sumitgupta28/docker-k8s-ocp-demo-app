@@ -143,6 +143,9 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 	persistentvolumeclaim/postgres-pv-claim created
 	```
 
+![ocp-demo-app](images/ocp-demo-app-db.png) 
+
+
 *	This command will execute all the yml files under the kubernetes folder and create below kubernetes objects 
 
 	```
