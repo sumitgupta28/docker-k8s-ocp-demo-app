@@ -13,7 +13,7 @@ services:
   kafka-server-1:
     image: confluent/kafka
     depends_on:
-      - zookeeper
+      - zookeeper-server
     ports:
       - "9092:9092"
     environment:
@@ -26,5 +26,9 @@ services:
   ocp-demo-app-db:
     build: .
     container_name: ocp-demo-app-db-kafka
+    depends_on:
+      - zookeeper-server
+      - kafka-server-1
+
     ports:
       - 8080:8080
