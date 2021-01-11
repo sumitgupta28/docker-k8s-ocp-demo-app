@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocp-demo-app-kafka
+spec:
+  selector:
+    matchLabels:
+      app: ocp-demo-app-kafka
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: ocp-demo-app-kafka
+    spec:
+      containers:
+      - name: ocp-demo-app-kafka
+        image: sumitgupta28/ocp-demo-app-kafka:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: KAFKA_ENDPOINT
+            value: kafka-service:9092
+            
+                
+                
