@@ -114,3 +114,47 @@ spec:
           image: confluentinc/cp-kafkacat
           command: ["/bin/sh"]
           args: ["-c", "trap : TERM INT; sleep infinity & wait"]
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocp-demo-app-kafka
+  labels:
+    app: ocp-demo-app-kafka
+spec:
+  type: NodePort
+  selector:
+    app: ocp-demo-app-kafka
+  ports:
+  - protocol: TCP
+    port: 8080
+    nodePort: 30080
+    name: http
+    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocp-demo-app-kafka
+spec:
+  selector:
+    matchLabels:
+      app: ocp-demo-app-kafka
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: ocp-demo-app-kafka
+    spec:
+      containers:
+      - name: ocp-demo-app-kafka
+        image: sumitgupta28/ocp-demo-app-kafka:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: KAFKA_ENDPOINT
+            value: kafka-service:9092
+            
+
