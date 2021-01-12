@@ -87,12 +87,8 @@ spec:
               value: "true"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-            - name: KAFKA_INTER_BROKER_LISTENER_NAME
-              value: PLAINTEXT
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
               value: "1"
-            - name: KAFKA_INTER_BROKER_LISTENER_NAME
-              value: "true"
 
 
 ---
