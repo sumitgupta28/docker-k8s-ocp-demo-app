@@ -141,3 +141,199 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 
 ![Docker Push](images/docker-push-1.JPG) 
 
+
+Since now we have pushed the producer/consumer app to docker hub. so let try to deploy app on kubernates. 
+
+Just for understanding to start with we will do the **kafka cluster creation with plain-yaml approach** for now and later we will see the **helm charts and Operators**. 
+
+
+#### Kafka
+
+> Apache Kafka is a scalable and fault-tolerant distributed message broker, and it can handle large volumes of real-time data efficiently. 
+
+> Compared to other message brokers such as RabbitMQ or ActiveMQ, it has a much higher throughput.
+
+> Kafka's pub/sub messaging system is probably the most widely used feature, 
+
+> however we can also use it for log aggregation since it provides persistent storage for published messages.
+
+![Docker Push](images/Kafka_Zookeeper.png) 
+
+> Kafka has 5 components:
+
+
+> 1.    **Topic**: A topic is a category or feed name to which messages are published by the message producers. Topics are partitioned and each partition is represented by the ordered immutable sequence of messages. Each message in the partition is assigned a unique sequential ID (offset).
+> 2. 	**Broker**: A Kafka cluster consists of servers where each one may have server processes (brokers). Topics are created within the context of broker processes.
+> 3. 	**Zookeeper**: Zookeeper serves as the coordinator between the Kafka broker and consumers.
+> 4. 	**Producers**: Producers publish data to the topics by choosing the appropriate partition within the topic.
+> 5. 	**Consumers**: Consumers are the applications or processes that subscribe to topics and process the feed of published messages.
+ 
+![Docker Push](images/Pub_Consumer.png) 
+ 
+ 
+### Kubernetes YAML 
+
+Refer to **\kubernetes\ocp-demo-app-kafka.yml**
+
+
+> 1.    **Create Zookeeper Deployment and Service**:
+
+This will create Zookeeper Deployment with 1 replica and zookeeper service
+
+	```
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  labels:
+	    app: zookeeper
+	  name: zookeeper
+	
+	spec:
+	  replicas: 1
+	  selector:
+	    matchLabels:
+	      app: zookeeper
+	  template:
+	    metadata:
+	      labels:
+	        app: zookeeper
+	    spec:
+	      containers:
+	      - image: library/zookeeper:3.4.13
+	        imagePullPolicy: IfNotPresent
+	        name: zookeeper
+	        ports:
+	        - containerPort: 2181
+	        env:
+	        - name: ZOO_MY_ID
+	          value: "1"
+		
+	---
+
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  labels:
+	    app: zookeeper-service
+	  name: zookeeper-service
+	
+	spec:
+	  type: NodePort
+	  ports:
+	  - name: zookeeper-port
+	    port: 2181
+	    targetPort: 2181
+	  selector:
+	    app: zookeeper
+    
+	```
+	
+
+> 2.    **Create Kafka StatefulSet and Service**
+
+This will create kafka Server and StatefulSet of kafka with 3 replicas
+
+	```
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: kafka
+	  labels:
+	    app: kafka
+	spec:
+	  ports:
+	  - port: 9092
+	    name: plaintext
+	  clusterIP: None
+	  selector:
+	    app: kafka
+	    
+	---
+	apiVersion: apps/v1
+	kind: StatefulSet
+	metadata:
+	  name: kafka
+	spec:
+	  selector:
+	    matchLabels:
+	      app: kafka
+	  serviceName: "kafka"
+	  replicas: 3
+	  podManagementPolicy: OrderedReady
+	  template:
+	    metadata:
+	      labels:
+	        app: kafka # has to match .spec.selector.matchLabels
+	    spec:
+	      containers:
+	      - name: kafka
+	        image: wurstmeister/kafka:2.11-2.0.0
+	        imagePullPolicy: IfNotPresent
+	        ports:
+	        - containerPort: 9092
+	          name: plaintext
+	        env:
+	          - name: KAFKA_ADVERTISED_PORT
+	            value: "9092"
+	          - name: KAFKA_ZOOKEEPER_CONNECT
+	            value: "zookeeper-service:2181"
+	          - name: KAFKA_LISTENERS
+	            value: "PLAINTEXT://:9092"
+	```
+	
+> 2.    **Deploy Producer/Consumer Application**
+
+this will create Deployemnt and Service for **ocp-demo-app-kafka** app and 
+
+	```
+	---
+
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: ocp-demo-app-kafka
+	  labels:
+	    app: ocp-demo-app-kafka
+	spec:
+	  type: NodePort
+	  selector:
+	    app: ocp-demo-app-kafka
+	  ports:
+	  - protocol: TCP
+	    port: 8080
+	    nodePort: 30080
+	    name: http
+	    
+	---
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: ocp-demo-app-kafka
+	spec:
+	  selector:
+	    matchLabels:
+	      app: ocp-demo-app-kafka
+	  replicas: 1
+	  template:
+	    metadata:
+	      labels:
+	        app: ocp-demo-app-kafka
+	    spec:
+	      containers:
+	      - name: ocp-demo-app-kafka
+	        image: sumitgupta28/ocp-demo-app-kafka:latest
+	        ports:
+	        - containerPort: 8080
+	        env:
+	          - name: KAFKA_ENDPOINT
+	            value: kafka:9092
+	
+	```
+	
+![Docker Push](images/ocp-demo-app-kafka-k8s.png) 
+
+
+
+### Kubernetes lets apply..
+
+	
