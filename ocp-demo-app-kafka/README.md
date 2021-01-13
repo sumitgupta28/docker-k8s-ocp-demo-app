@@ -39,8 +39,9 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 
 * 	Here is the content of docker-compose.yml
 
-	`
-		version: '3.3'
+
+	
+	version: '3.3'
 		
 		services:
 		  zookeeper:
@@ -79,8 +80,8 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 		      - 8080:8080
 		    environment:
 		      - KAFKA_ENDPOINT=localhost:9092
-      
-      `
+
+
 
 * 	Before running this , you would like to replace the **localhost** with your ip address. 
 
@@ -180,7 +181,7 @@ Refer to **\kubernetes\ocp-demo-app-kafka.yml**
 
 This will create Zookeeper Deployment with 1 replica and zookeeper service
 
-	```
+	
 	apiVersion: apps/v1
 	kind: Deployment
 	metadata:
@@ -226,14 +227,14 @@ This will create Zookeeper Deployment with 1 replica and zookeeper service
 	  selector:
 	    app: zookeeper
     
-	```
+
 	
 
 > 2.    **Create Kafka StatefulSet and Service**
 
 This will create kafka Server and StatefulSet of kafka with 3 replicas
 
-	```
+	
 	apiVersion: v1
 	kind: Service
 	metadata:
@@ -279,13 +280,13 @@ This will create kafka Server and StatefulSet of kafka with 3 replicas
 	            value: "zookeeper-service:2181"
 	          - name: KAFKA_LISTENERS
 	            value: "PLAINTEXT://:9092"
-	```
+	
 	
 > 2.    **Deploy Producer/Consumer Application**
 
 this will create Deployemnt and Service for **ocp-demo-app-kafka** app and 
 
-	```
+	
 	---
 
 	apiVersion: v1
@@ -328,7 +329,7 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 	          - name: KAFKA_ENDPOINT
 	            value: kafka:9092
 	
-	```
+	
 	
 ![Docker Push](images/ocp-demo-app-kafka-k8s.png) 
 
@@ -336,7 +337,7 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 
 ### Kubernetes lets apply..
 
-	```
+	
 	$ kubectl apply -f ocp-demo-app-kafka.yml
 	service/zookeeper-service created
 	deployment.apps/zookeeper created
@@ -344,11 +345,11 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 	statefulset.apps/kafka created
 	service/ocp-demo-app-kafka created
 	deployment.apps/ocp-demo-app-kafka created
-	```	
+		
 
 **Validate All the objects**
 
-	```
+	
 	$ kubectl get all
 	NAME                                      READY   STATUS    RESTARTS   AGE
 	pod/kafka-0                               1/1     Running   0          71s
@@ -372,7 +373,7 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 	
 	NAME                     READY   AGE
 	statefulset.apps/kafka   3/3     71s
-	```
+	
 	
 
 ### Validate Application..
@@ -383,7 +384,7 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 **Application logs**
 	
 	
-	```
+	
 	2021-01-13 05:04:18.672  INFO 1 --- [nio-8080-exec-6] c.ocp.demo.kafka.producer.KafkaProducer  : Sending message -> TestMessage
 	2021-01-13 05:04:18.687  INFO 1 --- [nio-8080-exec-6] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values:
 	        acks = 1
@@ -458,6 +459,6 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 	2021-01-13 05:04:18.746  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1610514258745
 	2021-01-13 05:04:18.788  INFO 1 --- [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: RXYyHa1HRM6ViJ3QevY1pg
 	2021-01-13 05:04:19.105  INFO 1 --- [ntainer#0-0-C-1] c.ocp.demo.kafka.consumer.KafkaConsumer  : Consumed message -> TestMessage	
-	```
+	
 	
 	
