@@ -336,4 +336,128 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 
 ### Kubernetes lets apply..
 
+	```
+	$ kubectl apply -f ocp-demo-app-kafka.yml
+	service/zookeeper-service created
+	deployment.apps/zookeeper created
+	service/kafka created
+	statefulset.apps/kafka created
+	service/ocp-demo-app-kafka created
+	deployment.apps/ocp-demo-app-kafka created
+	```	
+
+**Validate All the objects**
+
+	```
+	$ kubectl get all
+	NAME                                      READY   STATUS    RESTARTS   AGE
+	pod/kafka-0                               1/1     Running   0          71s
+	pod/kafka-1                               1/1     Running   0          25s
+	pod/kafka-2                               1/1     Running   0          23s
+	pod/ocp-demo-app-kafka-5c88dc58f4-vts2l   1/1     Running   1          71s
+	pod/zookeeper-cf4546599-8qpdm             1/1     Running   0          71s
+	
+	NAME                         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+	service/kafka                ClusterIP   None           <none>        9092/TCP         71s
+	service/ocp-demo-app-kafka   NodePort    10.96.123.55   <none>        8080:30080/TCP   71s
+	service/zookeeper-service    NodePort    10.108.26.85   <none>        2181:31027/TCP   71s
+	
+	NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/ocp-demo-app-kafka   1/1     1            1           71s
+	deployment.apps/zookeeper            1/1     1            1           71s
+	
+	NAME                                            DESIRED   CURRENT   READY   AGE
+	replicaset.apps/ocp-demo-app-kafka-5c88dc58f4   1         1         1       71s
+	replicaset.apps/zookeeper-cf4546599             1         1         1       71s
+	
+	NAME                     READY   AGE
+	statefulset.apps/kafka   3/3     71s
+	```
+	
+
+### Validate Application..
+	
+	http://<<<host>>:30080/kafka/publish/TestMessage
+	Message sent! check logs!
+	
+**Application logs**
+	
+	
+	```
+	2021-01-13 05:04:18.672  INFO 1 --- [nio-8080-exec-6] c.ocp.demo.kafka.producer.KafkaProducer  : Sending message -> TestMessage
+	2021-01-13 05:04:18.687  INFO 1 --- [nio-8080-exec-6] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values:
+	        acks = 1
+	        batch.size = 16384
+	        bootstrap.servers = [kafka:9092]
+	        buffer.memory = 33554432
+	        client.dns.lookup = use_all_dns_ips
+	        client.id = producer-1
+	        compression.type = none
+	        connections.max.idle.ms = 540000
+	        delivery.timeout.ms = 120000
+	        enable.idempotence = false
+	        interceptor.classes = []
+	        internal.auto.downgrade.txn.commit = true
+	        key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	        linger.ms = 0
+	        max.block.ms = 60000
+	        max.in.flight.requests.per.connection = 5
+	        max.request.size = 1048576
+	        metadata.max.age.ms = 300000
+	        metadata.max.idle.ms = 300000
+	        metric.reporters = []
+	        metrics.num.samples = 2
+	        metrics.recording.level = INFO
+	        metrics.sample.window.ms = 30000
+	        partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	        receive.buffer.bytes = 32768
+	        reconnect.backoff.max.ms = 1000
+	        reconnect.backoff.ms = 50
+	        request.timeout.ms = 30000
+	        retries = 2147483647
+	        retry.backoff.ms = 100
+	        sasl.client.callback.handler.class = null
+	        sasl.jaas.config = null
+	        sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	        sasl.kerberos.min.time.before.relogin = 60000
+	        sasl.kerberos.service.name = null
+	        sasl.kerberos.ticket.renew.jitter = 0.05
+	        sasl.kerberos.ticket.renew.window.factor = 0.8
+	        sasl.login.callback.handler.class = null
+	        sasl.login.class = null
+	        sasl.login.refresh.buffer.seconds = 300
+	        sasl.login.refresh.min.period.seconds = 60
+	        sasl.login.refresh.window.factor = 0.8
+	        sasl.login.refresh.window.jitter = 0.05
+	        sasl.mechanism = GSSAPI
+	        security.protocol = PLAINTEXT
+	        security.providers = null
+	        send.buffer.bytes = 131072
+	        ssl.cipher.suites = null
+	        ssl.enabled.protocols = [TLSv1.2]
+	        ssl.endpoint.identification.algorithm = https
+	        ssl.engine.factory.class = null
+	        ssl.key.password = null
+	        ssl.keymanager.algorithm = SunX509
+	        ssl.keystore.location = null
+	        ssl.keystore.password = null
+	        ssl.keystore.type = JKS
+	        ssl.protocol = TLSv1.2
+	        ssl.provider = null
+	        ssl.secure.random.implementation = null
+	        ssl.trustmanager.algorithm = PKIX
+	        ssl.truststore.location = null
+	        ssl.truststore.password = null
+	        ssl.truststore.type = JKS
+	        transaction.timeout.ms = 60000
+	        transactional.id = null
+	        value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	
+	2021-01-13 05:04:18.745  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.6.0
+	2021-01-13 05:04:18.746  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 62abe01bee039651
+	2021-01-13 05:04:18.746  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1610514258745
+	2021-01-13 05:04:18.788  INFO 1 --- [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: RXYyHa1HRM6ViJ3QevY1pg
+	2021-01-13 05:04:19.105  INFO 1 --- [ntainer#0-0-C-1] c.ocp.demo.kafka.consumer.KafkaConsumer  : Consumed message -> TestMessage	
+	```
+	
 	
