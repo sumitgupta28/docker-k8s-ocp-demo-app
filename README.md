@@ -8,4 +8,5 @@
 
 - [Simple Rest Service with Kakfa Stream](/ocp-demo-app-kafka-stream/README.md)
 
+- [Simple Rest Service implementing Request - Response Pattern with Kakfa](/ocp-demo-app-kafka-sync/README.md)
 
