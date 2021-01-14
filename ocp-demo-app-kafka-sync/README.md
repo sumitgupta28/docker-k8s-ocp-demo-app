@@ -36,12 +36,11 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 * 	This command will use the default file name **docker-compose.yml** 
 * 	Just for demo purpose we are creating only 1-1 instance of zookeeper and kafka. 
 
-![Demo App](images/single-node-zoo-kafka.jpeg)
+![](images/single-node-zoo-kafka.jpeg)
 
 * 	Here is the content of docker-compose.yml
 	
 	version: '3.3'
-
 	services:
 	  zookeeper:
 	    image: confluentinc/cp-zookeeper
@@ -50,6 +49,7 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 	    environment:
 	      - ALLOW_ANONYMOUS_LOGIN=yes
 	      - ZOOKEEPER_CLIENT_PORT=2181
+	
 	
 	  kafka:
 	    image: confluentinc/cp-kafka
@@ -66,9 +66,10 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 	      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
 	      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
 	      
+	      
 	  ocp-demo-app-kafka:
 	    build: .
-	    container_name: ocp-demo-app-kafka-stream
+	    container_name: ocp-demo-app-kafka-sync
 	    depends_on:
 	      - zookeeper
 	      - kafka
@@ -77,8 +78,7 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 	      - 8080:8080
 	    environment:
 	      - KAFKA_ENDPOINT=localhost:9092
-
-
+	            
 
 * 	Before running this , you would like to replace the **localhost** with your ip address. 
 
@@ -87,7 +87,6 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 *	Now lets **create/build** image for ocp-demo-app-kafka
 
 	$ docker-compose build
-	
 	
 * 	this command will create image for ocp-demo-app-kafka and you can verify this with docker images comamnd
 
@@ -118,25 +117,23 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 
 *	use below commands to create image and tag and push to docker hub
 
-*	go to folder /ocp-demo-app/ocp-demo-app-db
+*	go to folder /ocp-demo-app/ocp-demo-app-kafka-sync
 
 *	build image with required tag
 
-	$ docker build . -t sumitgupta28/ocp-demo-app-kafka-stream
+	$ docker build . -t <<docker-hub-user-id>>/ocp-demo-app-kafka-sync
 	
-*	this will create docker image with tag	**sumitgupta28/ocp-demo-app-kafka-stream:latest**
+*	this will create docker image with tag	**<<docker-hub-user-id>>/ocp-demo-app-kafka-sync:latest**
 
-*	docker login
+*	docker login [provide your docker-hub username and password] and c
 	
 	$ docker login
 
 *	docker push
 
-	$ docker push sumitgupta28/ocp-demo-app-kafka-stream
+	$ docker push <<docker-hub-user-id>>/ocp-demo-app-kafka-sync
 	
 	
-![Docker Push](images/docker-push.JPG) 
-
 ![Docker Push](images/docker-push-1.JPG) 
 
 
@@ -281,21 +278,20 @@ This will create kafka Server and StatefulSet of kafka with 3 replicas
 	
 > 2.    **Deploy Producer/Consumer Application**
 
-this will create Deployemnt and Service for **ocp-demo-app-kafka-stream** app and 
+this will create Deployemnt and Service for **ocp-demo-app-kafka-sync** app and 
 
-	
 	---
 	
 	apiVersion: v1
 	kind: Service
 	metadata:
-	  name: ocp-demo-app-kafka-stream
+	  name: ocp-demo-app-kafka-sync
 	  labels:
-	    app: ocp-demo-app-kafka-stream
+	    app: ocp-demo-app-kafka-sync
 	spec:
 	  type: NodePort
 	  selector:
-	    app: ocp-demo-app-kafka-stream
+	    app: ocp-demo-app-kafka-sync
 	  ports:
 	  - protocol: TCP
 	    port: 8080
@@ -306,27 +302,26 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka-stream** app an
 	apiVersion: apps/v1
 	kind: Deployment
 	metadata:
-	  name: ocp-demo-app-kafka-stream
+	  name: ocp-demo-app-kafka-sync
 	spec:
 	  selector:
 	    matchLabels:
-	      app: ocp-demo-app-kafka-stream
+	      app: ocp-demo-app-kafka-sync
 	  replicas: 1
 	  template:
 	    metadata:
 	      labels:
-	        app: ocp-demo-app-kafka-stream
+	        app: ocp-demo-app-kafka-sync
 	    spec:
 	      containers:
-	      - name: ocp-demo-app-kafka-stream
-	        image: sumitgupta28/ocp-demo-app-kafka-stream:latest
+	      - name: ocp-demo-app-kafka-sync
+	        image: sumitgupta28/ocp-demo-app-kafka-sync:latest
 	        ports:
 	        - containerPort: 8080
 	        env:
 	          - name: KAFKA_ENDPOINT
 	            value: kafka:9092
-	
-	
+	            
 	
 ![Docker Push](images/ocp-demo-app-kafka-k8s.png) 
 
@@ -334,38 +329,40 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka-stream** app an
 
 ### Kubernetes lets apply..
 
-		
-	$ kubectl apply -f ocp-demo-app-kafka-stream.yml
+	
+	$ kubectl apply  -f ocp-demo-app-kafka-sync.yml
 	service/zookeeper-service created
 	deployment.apps/zookeeper created
 	service/kafka created
 	statefulset.apps/kafka created
-	service/ocp-demo-app-kafka-stream created
-	deployment.apps/ocp-demo-app-kafka-stream created
-			
+	service/ocp-demo-app-kafka-sync created
+	deployment.apps/ocp-demo-app-kafka-sync created
+		
 
 **Validate All the objects**
 
-	
+
 	$ kubectl get all
-	NAME                                             READY   STATUS    RESTARTS   AGE
-	pod/kafka-0                                      1/1     Running   0          5m
-	pod/kafka-1                                      1/1     Running   0          5m9s
-	pod/kafka-2                                      1/1     Running   0          5m34s
-	pod/ocp-demo-app-kafka-stream-5cc96fb497-bmwcg   1/1     Running   0          22m
-	pod/zookeeper-cf4546599-bqqql                    1/1     Running   0          22m
+	NAME                                           READY   STATUS    RESTARTS   AGEpod/kafka-0                                    1/1     Running   0          87s
+	pod/kafka-1                                    1/1     Running   0          57spod/kafka-2                                    1/1     Running   0          54s
+	pod/ocp-demo-app-kafka-sync-65f5cbd7fb-67dgn   1/1     Running   0          87spod/zookeeper-cf4546599-2rnn9                  1/1     Running   0          87s
 	
-	NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-	service/kafka                       ClusterIP   None             <none>        9092/TCP         22m
-	service/ocp-demo-app-kafka-stream   NodePort    10.109.140.207   <none>        8080:30080/TCP   22m
-	service/zookeeper-service           NodePort    10.108.213.119   <none>        2181:30462/TCP   22m
-	
-	NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
-	deployment.apps/ocp-demo-app-kafka-stream   1/1     1            1           22m
-	deployment.apps/zookeeper                   1/1     1            1           22m
-	
-	NAME                                                   DESIRED   CURRENT   READY   AGE
-	replicaset.apps/ocp-demo-app-kafka-stream-5cc96fb497   1         1         1       22mreplicaset.apps/zookeeper-cf4546599                    1         1         1       22m
+	NAME                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+	service/kafka                     ClusterIP   None             <none>        9092/TCP         87s
+	service/ocp-demo-app-kafka-sync   NodePort    10.111.244.232   <none>        8080:30080/TCP   87s
+	service/zookeeper-service         NodePort    10.104.141.46    <none>        2181:30126/TCP   87s
+
+	NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/ocp-demo-app-kafka-sync   1/1     1            1           87s
+	deployment.apps/zookeeper                 1/1     1            1           87s
+
+	NAME                                                 DESIRED   CURRENT   READY   AGE
+	replicaset.apps/ocp-demo-app-kafka-sync-65f5cbd7fb   1         1         1       87s
+	replicaset.apps/zookeeper-cf4546599                  1         1         1       87s
+
+	NAME                     READY   AGE
+	statefulset.apps/kafka   3/3     87s
+
 	
 
 ### Validate Application..
@@ -378,20 +375,44 @@ This Application has swagger configured and both the exposed urls can be tested 
 
 #### Test with curl
 
-	curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' -d '{
-	  "contents": "Sample Message"
-	}' 'https://2886795294-30080-ollie09.environments.katacoda.com/sendMessage/complexType'
+	curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+	  "emailId": "Sumit@mail.com",
+	  "firstName": "string",
+	  "lastName": "string"
+	}' 'http://ip172-18-0-12-bvvv0mb6hnp0009smbq0-8080.direct.labs.play-with-docker.com/emp/calSal'
+	
+**Response Body**
 
+	{
+	  "name": "string string",
+	  "sal": "6370$"
+	}
 
-	2021-01-14 06:27:54.571  INFO 1 --- [container-0-C-1] com.ocp.demo.kafka.consumer.Consumer     : recieved a complex message : [6:27:54 AM]: Sample Message
-	2021-01-14 06:27:54.571  INFO 1 --- [container-0-C-1] com.ocp.demo.kafka.consumer.Consumer     : recieved a string message : {"contents":"Sample Message","time":1610605674560}
 	
 	
-	curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' -d '{
-	"Name": "Sumit"
-	}' 'https://2886795294-30080-ollie09.environments.katacoda.com/sendMessage/string'
+	
+**Curl**
+	
+	curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+	  "emailId": "string",
+	  "firstName": "string",
+	  "lastName": "string"
+	}' 'https://2886795280-30080-cykoria03.environments.katacoda.com/emp/calSal'
+	
 
+**Request URL**
 
-	2021-01-14 06:31:36.379  INFO 1 --- [container-0-C-1] com.ocp.demo.kafka.consumer.Consumer     : recieved a string message : {
-	"Name": "Sumit"
+	https://2886795280-30080-cykoria03.environments.katacoda.com/emp/calSal
+
+**Request Headers**
+
+	{
+	  "Accept": "application/json"
+	}
+
+**Response Body**
+
+	{
+	  "name": "string string",
+	  "sal": "1534$"
 	}
