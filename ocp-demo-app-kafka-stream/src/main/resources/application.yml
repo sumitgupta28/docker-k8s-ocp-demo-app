@@ -11,6 +11,7 @@ spring:
         input:
          binder: kafka
          destination: test
+         
          content-type: text/plain
          group: input-group-1
         output:

@@ -1,8 +1,9 @@
 # OCP Demo APP
 
 
-*	This is simple application to demonstrate the Spring boot application to kakfa connectivity.
-*	Spring boot application will act as producer and consumer. 
+*	This is simple application to demonstrate the spring-cloud-stream with kafka.
+*	Just to keep it simple same spring boot application will act as producer and consumer. 
+*	Below image show the the exposed api's and flow.  
 
 
 ![Demo App](images/ocp-demo-app-kafka-flow.png) 
@@ -38,48 +39,44 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 ![Demo App](images/single-node-zoo-kafka.jpeg)
 
 * 	Here is the content of docker-compose.yml
-
-
 	
 	version: '3.3'
-		
-		services:
-		  zookeeper:
-		    image: confluentinc/cp-zookeeper
-		    ports:
-		      - 2181:2181
-		    environment:
-		      - ALLOW_ANONYMOUS_LOGIN=yes
-		      - ZOOKEEPER_CLIENT_PORT=2181
-		
-		
-		  kafka:
-		    image: confluentinc/cp-kafka
-		    depends_on:
-		      - zookeeper
-		    ports:
-		      - 9092:9092
-		    environment:
-		      - KAFKA_BROKER_ID=1
-		      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-		      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
-		      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-		      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-		      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-		      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
-		      
-		      
-		  ocp-demo-app-kafka:
-		    build: .
-		    container_name: ocp-demo-app-kafka
-		    depends_on:
-		      - zookeeper
-		      - kafka
-		
-		    ports:
-		      - 8080:8080
-		    environment:
-		      - KAFKA_ENDPOINT=localhost:9092
+
+	services:
+	  zookeeper:
+	    image: confluentinc/cp-zookeeper
+	    ports:
+	      - 2181:2181
+	    environment:
+	      - ALLOW_ANONYMOUS_LOGIN=yes
+	      - ZOOKEEPER_CLIENT_PORT=2181
+	
+	  kafka:
+	    image: confluentinc/cp-kafka
+	    depends_on:
+	      - zookeeper
+	    ports:
+	      - 9092:9092
+	    environment:
+	      - KAFKA_BROKER_ID=1
+	      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+	      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+	      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+	      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+	      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+	      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+	      
+	  ocp-demo-app-kafka:
+	    build: .
+	    container_name: ocp-demo-app-kafka-stream
+	    depends_on:
+	      - zookeeper
+	      - kafka
+	
+	    ports:
+	      - 8080:8080
+	    environment:
+	      - KAFKA_ENDPOINT=localhost:9092
 
 
 
@@ -125,9 +122,9 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 
 *	build image with required tag
 
-	$ docker build . -t sumitgupta28/ocp-demo-app-kafka
+	$ docker build . -t sumitgupta28/ocp-demo-app-kafka-stream
 	
-*	this will create docker image with tag	**sumitgupta28/ocp-demo-app-kafka:latest**
+*	this will create docker image with tag	**sumitgupta28/ocp-demo-app-kafka-stream:latest**
 
 *	docker login
 	
@@ -135,7 +132,7 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 
 *	docker push
 
-	$ docker push sumitgupta28/ocp-demo-app-kafka
+	$ docker push sumitgupta28/ocp-demo-app-kafka-stream
 	
 	
 ![Docker Push](images/docker-push.JPG) 
@@ -268,7 +265,7 @@ This will create kafka Server and StatefulSet of kafka with 3 replicas
 	    spec:
 	      containers:
 	      - name: kafka
-	        image: wurstmeister/kafka:2.11-2.0.0
+	        image: wurstmeister/kafka
 	        imagePullPolicy: IfNotPresent
 	        ports:
 	        - containerPort: 9092
@@ -284,21 +281,21 @@ This will create kafka Server and StatefulSet of kafka with 3 replicas
 	
 > 2.    **Deploy Producer/Consumer Application**
 
-this will create Deployemnt and Service for **ocp-demo-app-kafka** app and 
+this will create Deployemnt and Service for **ocp-demo-app-kafka-stream** app and 
 
 	
 	---
-
+	
 	apiVersion: v1
 	kind: Service
 	metadata:
-	  name: ocp-demo-app-kafka
+	  name: ocp-demo-app-kafka-stream
 	  labels:
-	    app: ocp-demo-app-kafka
+	    app: ocp-demo-app-kafka-stream
 	spec:
 	  type: NodePort
 	  selector:
-	    app: ocp-demo-app-kafka
+	    app: ocp-demo-app-kafka-stream
 	  ports:
 	  - protocol: TCP
 	    port: 8080
@@ -309,20 +306,20 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 	apiVersion: apps/v1
 	kind: Deployment
 	metadata:
-	  name: ocp-demo-app-kafka
+	  name: ocp-demo-app-kafka-stream
 	spec:
 	  selector:
 	    matchLabels:
-	      app: ocp-demo-app-kafka
+	      app: ocp-demo-app-kafka-stream
 	  replicas: 1
 	  template:
 	    metadata:
 	      labels:
-	        app: ocp-demo-app-kafka
+	        app: ocp-demo-app-kafka-stream
 	    spec:
 	      containers:
-	      - name: ocp-demo-app-kafka
-	        image: sumitgupta28/ocp-demo-app-kafka:latest
+	      - name: ocp-demo-app-kafka-stream
+	        image: sumitgupta28/ocp-demo-app-kafka-stream:latest
 	        ports:
 	        - containerPort: 8080
 	        env:
@@ -351,114 +348,50 @@ this will create Deployemnt and Service for **ocp-demo-app-kafka** app and
 
 	
 	$ kubectl get all
-	NAME                                      READY   STATUS    RESTARTS   AGE
-	pod/kafka-0                               1/1     Running   0          71s
-	pod/kafka-1                               1/1     Running   0          25s
-	pod/kafka-2                               1/1     Running   0          23s
-	pod/ocp-demo-app-kafka-5c88dc58f4-vts2l   1/1     Running   1          71s
-	pod/zookeeper-cf4546599-8qpdm             1/1     Running   0          71s
+	NAME                                             READY   STATUS    RESTARTS   AGE
+	pod/kafka-0                                      1/1     Running   0          5m
+	pod/kafka-1                                      1/1     Running   0          5m9s
+	pod/kafka-2                                      1/1     Running   0          5m34s
+	pod/ocp-demo-app-kafka-stream-5cc96fb497-bmwcg   1/1     Running   0          22m
+	pod/zookeeper-cf4546599-bqqql                    1/1     Running   0          22m
 	
-	NAME                         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
-	service/kafka                ClusterIP   None           <none>        9092/TCP         71s
-	service/ocp-demo-app-kafka   NodePort    10.96.123.55   <none>        8080:30080/TCP   71s
-	service/zookeeper-service    NodePort    10.108.26.85   <none>        2181:31027/TCP   71s
+	NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+	service/kafka                       ClusterIP   None             <none>        9092/TCP         22m
+	service/ocp-demo-app-kafka-stream   NodePort    10.109.140.207   <none>        8080:30080/TCP   22m
+	service/zookeeper-service           NodePort    10.108.213.119   <none>        2181:30462/TCP   22m
 	
-	NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
-	deployment.apps/ocp-demo-app-kafka   1/1     1            1           71s
-	deployment.apps/zookeeper            1/1     1            1           71s
+	NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/ocp-demo-app-kafka-stream   1/1     1            1           22m
+	deployment.apps/zookeeper                   1/1     1            1           22m
 	
-	NAME                                            DESIRED   CURRENT   READY   AGE
-	replicaset.apps/ocp-demo-app-kafka-5c88dc58f4   1         1         1       71s
-	replicaset.apps/zookeeper-cf4546599             1         1         1       71s
-	
-	NAME                     READY   AGE
-	statefulset.apps/kafka   3/3     71s
-	
+	NAME                                                   DESIRED   CURRENT   READY   AGE
+	replicaset.apps/ocp-demo-app-kafka-stream-5cc96fb497   1         1         1       22mreplicaset.apps/zookeeper-cf4546599                    1         1         1       22m
 	
 
 ### Validate Application..
+
+This Application has swagger configured and both the exposed urls can be tested ....
 	
-	http://<<<host>>:30080/kafka/publish/TestMessage
-	Message sent! check logs!
-	
-**Application logs**
-	
-	
-	
-	2021-01-13 05:04:18.672  INFO 1 --- [nio-8080-exec-6] c.ocp.demo.kafka.producer.KafkaProducer  : Sending message -> TestMessage
-	2021-01-13 05:04:18.687  INFO 1 --- [nio-8080-exec-6] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values:
-	        acks = 1
-	        batch.size = 16384
-	        bootstrap.servers = [kafka:9092]
-	        buffer.memory = 33554432
-	        client.dns.lookup = use_all_dns_ips
-	        client.id = producer-1
-	        compression.type = none
-	        connections.max.idle.ms = 540000
-	        delivery.timeout.ms = 120000
-	        enable.idempotence = false
-	        interceptor.classes = []
-	        internal.auto.downgrade.txn.commit = true
-	        key.serializer = class org.apache.kafka.common.serialization.StringSerializer
-	        linger.ms = 0
-	        max.block.ms = 60000
-	        max.in.flight.requests.per.connection = 5
-	        max.request.size = 1048576
-	        metadata.max.age.ms = 300000
-	        metadata.max.idle.ms = 300000
-	        metric.reporters = []
-	        metrics.num.samples = 2
-	        metrics.recording.level = INFO
-	        metrics.sample.window.ms = 30000
-	        partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
-	        receive.buffer.bytes = 32768
-	        reconnect.backoff.max.ms = 1000
-	        reconnect.backoff.ms = 50
-	        request.timeout.ms = 30000
-	        retries = 2147483647
-	        retry.backoff.ms = 100
-	        sasl.client.callback.handler.class = null
-	        sasl.jaas.config = null
-	        sasl.kerberos.kinit.cmd = /usr/bin/kinit
-	        sasl.kerberos.min.time.before.relogin = 60000
-	        sasl.kerberos.service.name = null
-	        sasl.kerberos.ticket.renew.jitter = 0.05
-	        sasl.kerberos.ticket.renew.window.factor = 0.8
-	        sasl.login.callback.handler.class = null
-	        sasl.login.class = null
-	        sasl.login.refresh.buffer.seconds = 300
-	        sasl.login.refresh.min.period.seconds = 60
-	        sasl.login.refresh.window.factor = 0.8
-	        sasl.login.refresh.window.jitter = 0.05
-	        sasl.mechanism = GSSAPI
-	        security.protocol = PLAINTEXT
-	        security.providers = null
-	        send.buffer.bytes = 131072
-	        ssl.cipher.suites = null
-	        ssl.enabled.protocols = [TLSv1.2]
-	        ssl.endpoint.identification.algorithm = https
-	        ssl.engine.factory.class = null
-	        ssl.key.password = null
-	        ssl.keymanager.algorithm = SunX509
-	        ssl.keystore.location = null
-	        ssl.keystore.password = null
-	        ssl.keystore.type = JKS
-	        ssl.protocol = TLSv1.2
-	        ssl.provider = null
-	        ssl.secure.random.implementation = null
-	        ssl.trustmanager.algorithm = PKIX
-	        ssl.truststore.location = null
-	        ssl.truststore.password = null
-	        ssl.truststore.type = JKS
-	        transaction.timeout.ms = 60000
-	        transactional.id = null
-	        value.serializer = class org.apache.kafka.common.serialization.StringSerializer
-	
-	2021-01-13 05:04:18.745  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.6.0
-	2021-01-13 05:04:18.746  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 62abe01bee039651
-	2021-01-13 05:04:18.746  INFO 1 --- [nio-8080-exec-6] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1610514258745
-	2021-01-13 05:04:18.788  INFO 1 --- [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: RXYyHa1HRM6ViJ3QevY1pg
-	2021-01-13 05:04:19.105  INFO 1 --- [ntainer#0-0-C-1] c.ocp.demo.kafka.consumer.KafkaConsumer  : Consumed message -> TestMessage	
+	http://<<<host>>:30080/swagger-ui.html
+
+![](images/swagger.JPG) 
+
+#### Test with curl
+
+	curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' -d '{
+	  "contents": "Sample Message"
+	}' 'https://2886795294-30080-ollie09.environments.katacoda.com/sendMessage/complexType'
+
+
+	2021-01-14 06:27:54.571  INFO 1 --- [container-0-C-1] com.ocp.demo.kafka.consumer.Consumer     : recieved a complex message : [6:27:54 AM]: Sample Message
+	2021-01-14 06:27:54.571  INFO 1 --- [container-0-C-1] com.ocp.demo.kafka.consumer.Consumer     : recieved a string message : {"contents":"Sample Message","time":1610605674560}
 	
 	
-	
+	curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' -d '{
+	"Name": "Sumit"
+	}' 'https://2886795294-30080-ollie09.environments.katacoda.com/sendMessage/string'
+
+
+	2021-01-14 06:31:36.379  INFO 1 --- [container-0-C-1] com.ocp.demo.kafka.consumer.Consumer     : recieved a string message : {
+	"Name": "Sumit"
+	}
