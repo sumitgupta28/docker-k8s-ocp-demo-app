@@ -9,7 +9,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ocp.demo.kafka</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>ocp-demo-app-kafka-stream</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ocp-demo-app-kafka-stream</name>
 	<description>Demo project for Spring Boot</description>
