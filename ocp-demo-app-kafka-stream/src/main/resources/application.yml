@@ -6,7 +6,7 @@ spring:
       kafka:
         binder:
           brokers:
-          - my-cluster-kafka-bootstrap:9092
+          - ${KAFKA_ENDPOINT}
       bindings:
         input:
          binder: kafka
