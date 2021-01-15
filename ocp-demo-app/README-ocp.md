@@ -93,27 +93,28 @@ Here
 	
 *	**oc get all** - Lets see what all resource got created post this deployment
 		
+
 	$ oc get all
 	NAME                                READY   STATUS      RESTARTS   AGE
 	pod/ocp-demo-app-1-build            0/1     Completed   0          14m
 	pod/ocp-demo-app-7478f8c9cb-5v46m   1/1     Running     0          12m
-	
+		
 	NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 	service/ocp-demo-app   ClusterIP   172.25.97.124   <none>        8080/TCP,8443/TCP,8778/TCP   14m
-	
+		
 	NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
 	deployment.apps/ocp-demo-app   1/1     1            1           14m
-	
+		
 	NAME                                      DESIRED   CURRENT   READY   AGE
 	replicaset.apps/ocp-demo-app-649f4c6cbc   0         0         0       14m
 	replicaset.apps/ocp-demo-app-7478f8c9cb   1         1         1       12m
-	
+		
 	NAME                                          TYPE     FROM   LATEST
 	buildconfig.build.openshift.io/ocp-demo-app   Source   Git    1
-	
+		
 	NAME                                      TYPE     FROM          STATUS     STARTED          DURATION
 	build.build.openshift.io/ocp-demo-app-1   Source   Git@0f4226a   Complete   14 minutes ago   1m19s
-	
+		
 	NAME                                          IMAGE REPOSITORY                                                                TAGS     UPDATED
 	imagestream.image.openshift.io/ocp-demo-app   default-route-openshift-image-registry.apps-crc.testing/ocp-demo/ocp-demo-app   latest   12 minutes ago
 	
@@ -121,7 +122,6 @@ Here
 ![](images/ocp-all.jpg "") 
 
 #### Lets Understand these
-
 
 *	**buildconfig.build.openshift.io/ocp-demo-app** - This a build configuration to build a docker image from source.  
 	
