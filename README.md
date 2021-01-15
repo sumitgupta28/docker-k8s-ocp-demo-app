@@ -26,9 +26,9 @@ This repository contains sample application to demonstrate how an application ca
 	
 	- How to deploy the /ocp-demo-app [ a simple rest service] on OCP using S2I[Source] build Strategy 
 
-- [Simple Rest Service on OCP with S2I-Docker](/ocp-demo-app/README-ocp-docker.md) 
+- [Simple Rest Service on OCP with DockerFile & Docker Image](/ocp-demo-app/README-ocp-docker.md) 
 	
-	- How to deploy the /ocp-demo-app [ a simple rest service] on OCP using S2I[Docker] build Strategy 
+	- How to deploy the /ocp-demo-app [ a simple rest service] on OCP using DockerFile & Docker Image build Strategy 
 
 
 - [CURD Rest Service with Postgresql](/ocp-demo-app-db/README.md)
