@@ -8,6 +8,7 @@
 
 *	Login as Developer	
 	
+	
 	$ oc login -u developer -p developer
 
 ######output 
@@ -153,3 +154,7 @@ Now test application
 
 	
 This will delete all the services/deployment/buildConfig/build/image stream/route for the ocp-demo-app
+
+
+
+

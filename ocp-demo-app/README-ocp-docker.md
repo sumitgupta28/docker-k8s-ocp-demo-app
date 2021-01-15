@@ -2,7 +2,7 @@
 
 *	Ocp Container can deploy application in various way like S2I [Source to Image] , Docker File and Docker Image. 
 
-### S2I [Source to Image with Docker FIle] 
+### Docker FIle
 
 ![](https://www.admin-magazine.com/var/ezflow_site/storage/images/archive/2018/47/automatic-build-and-deploy-with-openshift-and-gitlab-ci/figure-7/155512-1-eng-US/Figure-7_large.png) 
 
@@ -141,3 +141,56 @@ Now test application
 
 	
 This will delete all the services/deployment/buildConfig/build/image stream/route for the ocp-demo-app
+
+
+
+### Docker Image
+
+
+Lets deploy simple ocp-demo-app with Docker Image
+
+	$ oc new-app sumitgupta28/ocp-demo-app
+	
+	--> Found container image 4c1239e (10 days old) from Docker Hub for "sumitgupta28/ocp-demo-app"    * An image stream tag will be created as "ocp-demo-app:latest" that will track this image--> Creating resources ...
+	    imagestream.image.openshift.io "ocp-demo-app" created
+	    deployment.apps "ocp-demo-app" created
+	    service "ocp-demo-app" created
+	--> Success
+	    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+	     'oc expose svc/ocp-demo-app'
+	    Run 'oc status' to view your app.
+	
+
+
+Here there is no build config.
+	
+	$ oc get all
+	NAME                                READY   STATUS    RESTARTS   AGE
+	pod/ocp-demo-app-65ffbd465d-lgh4g   1/1     Running   0          32s
+	
+	NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+	service/ocp-demo-app   ClusterIP   172.25.137.49   <none>        8080/TCP   34s
+	
+	NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/ocp-demo-app   1/1     1            1           34s
+	
+	NAME                                      DESIRED   CURRENT   READY   AGE
+	replicaset.apps/ocp-demo-app-65ffbd465d   1         1         1       32s
+	replicaset.apps/ocp-demo-app-67bbcc7474   0         0         0       34s
+	
+	NAME                                          IMAGE REPOSITORY  TAGS     UPDATED
+	imagestream.image.openshift.io/ocp-demo-app   default-route-openshift-image-registry.apps-crc.testing/ocp-demo/ocp-demo-app  latest   32 seconds ago
+	
+	NAME                                    HOST/PORT                                                              PATH   SERVICES       PORT       TERMINATION   WILDCARD
+	route.route.openshift.io/ocp-demo-app   ocp-demo-app-ocp-demo.2886795317-80-kota02.environments.katacoda.com          ocp-demo-app   8080-tcp                 None
+
+#### Clean up
+
+	$ oc delete all -l app=ocp-demo-app
+	service "ocp-demo-app" deleted
+	deployment.apps "ocp-demo-app" deleted
+	imagestream.image.openshift.io "ocp-demo-app" deleted
+	route.route.openshift.io "ocp-demo-app" deleted
+	
+This will delete all the services/deployment/image stream/route for the ocp-demo-app
+	
