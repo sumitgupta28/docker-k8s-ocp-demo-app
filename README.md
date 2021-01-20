@@ -1,5 +1,7 @@
 # OCP Demo Applications
 
+Welcome to the Docker/Kubernates/OpenShift Tutorial!
+
 This repository contains sample application to demonstrate how an application can be build/deployed on various platforms 
 - 	**Docker**
 - 	**Kubernates**

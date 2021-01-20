@@ -64,6 +64,52 @@ Verify docker hub
 ![build](images/docker-hub.JPG) 
 
 
+## Using Docker to run the app. 
+
+	$ docker container run -dt -p 8080:8080 --name ocp-demo-app ocp-demo-app
+	82f559f4aa793757d4dfb3d2bacd12bef007f2ef0be8f7ddb3f34c809568e124
+	
+
+Verify the running Container 
+	
+	$ docker container ls
+	CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS         NAMES
+	82f559f4aa79        ocp-demo-app           "java -jar /usr/app/…"   21 seconds ago      Up 18 seconds       0.0.0.0:8080->8080/tcp   ocp-demo-app
+
+Verify the Logs
+
+	$ docker container logs ocp-demo-app
+	  .   ____          _            __ _ _
+	 /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+	( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \ \
+	  \/  ___)| |_)| | | | | || (_| |  ) ) ) )  
+	  '  |____| .__|_| |_|_| |_\__, | / / / / 
+	 =========|_|==============|___/=/_/_/_/ 
+	:: Spring Boot ::                (v2.4.1)2021-01-20 13:38:15.339  INFO 1 --- [           main] com.example.demo.OcpDemoAppApplication   : Starting OcpDemoAppApplication v0.0.1-SNAPSHOT using Java 1.8.0_275 on 82f559f4aa79 with PID 1 (/usr/app/ocp-demo-app.jar started by root in /)2021-01-20 13:38:15.346  INFO 1 --- [           main] com.example.demo.OcpDemoAppApplication   : No active profile set, falling back to default profiles: default
+	2021-01-20 13:38:17.357  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)2021-01-20 13:38:17.374  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+	2021-01-20 13:38:17.374  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+	2021-01-20 13:38:17.441  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+	2021-01-20 13:38:17.441  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1938 ms
+	2021-01-20 13:38:18.166  INFO 1 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+	2021-01-20 13:38:18.382  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s):8080 (http) with context path ''
+	2021-01-20 13:38:18.404  INFO 1 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+	2021-01-20 13:38:18.433  INFO 1 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+	2021-01-20 13:38:18.448  INFO 1 --- [           main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+	2021-01-20 13:38:18.581  INFO 1 --- [           main] com.example.demo.OcpDemoAppApplication   : Started OcpDemoAppApplication in 4.042 seconds (JVM running for 4.693)
+	2021-01-20 13:39:11.477  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+	2021-01-20 13:39:11.478  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+	2021-01-20 13:39:11.479  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+
+
+Test
+
+	$ curl http://localhost:8080/api/hello
+	hello OCP
+	$ curl http://localhost:8080/api/hello/Sumit
+	hello Sumit
+
+
+
 ## Using Kubernetes to run the app. 
 
 
