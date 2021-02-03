@@ -36,5 +36,10 @@ spec:
                 name: postgres-configuration        
                 key: POSTGRES_PASSWORD        
                 
+          - name: POSTGRESQL_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: postgres-configuration        
+                key: POSTGRESQL_SERVICE_NAME        
                 
                 
