@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ocp-demo-app
+  name: ocp-demo-app
+  namespace: sumit-gupta-redhat-code
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: ocp-demo-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+      labels:
+        deployment: ocp-demo-app
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/sumit-gupta-redhat-code/ocp-demo-app@sha256:054e827bbd65b44539858bcad3980306341879e09142b09e1026c3e83ea9a034
+        imagePullPolicy: IfNotPresent
+        name: ocp-demo-app
+        ports:
+        - containerPort: 8080
+          protocol: TCP

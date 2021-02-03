@@ -70,6 +70,7 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 	      - POSTGRESQL_DB_NAME=sample_database
 	      - POSTGRESQL_USER=postgresql_user
 	      - POSTGRESQL_PASSWORD=postgresql_password
+	      - POSTGRESQL_SERVICE_NAME=postgresql
       `
 
 

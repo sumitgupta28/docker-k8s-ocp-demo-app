@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: ocp-demo-app
+  name: ocp-demo-app
+  namespace: sumit-gupta-redhat-code
+spec:
+  host: ocp-demo-app-sumit-gupta-redhat-code.apps.sandbox.x8i5.p1.openshiftapps.com
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: ocp-demo-app
+    weight: 100
+  wildcardPolicy: None

@@ -1,0 +1,23 @@
+﻿kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: ocp-demo-app
+  namespace: sumit-gupta-redhat-code
+  labels:
+    app: ocp-demo-app
+spec:
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/sumitgupta28/ocp-demo-app.git'
+    contextDir: ocp-demo-app
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'openjdk:8-jre'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'ocp-demo-app:latest'

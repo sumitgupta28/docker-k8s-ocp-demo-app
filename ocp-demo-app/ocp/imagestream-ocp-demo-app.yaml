@@ -1,0 +1,10 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: ocp-demo-app
+  name: ocp-demo-app
+  namespace: sumit-gupta-redhat-code
+spec:
+  lookupPolicy:
+    local: false
