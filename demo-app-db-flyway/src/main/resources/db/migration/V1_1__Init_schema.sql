@@ -1,6 +1,6 @@
-CREATE SCHEMA EMP;
+CREATE SCHEMA IF NOT EXISTS emp;
 
-CREATE TABLE EMP.TEST_EMP (
+CREATE TABLE IF NOT EXISTS emp.TEST_EMP (
         id int4 not null,
         email_id varchar(255),
         first_name varchar(255),
@@ -9,7 +9,7 @@ CREATE TABLE EMP.TEST_EMP (
  );
 
 
-CREATE TABLE employees (
+CREATE TABLE IF NOT EXISTS emp.employees (
     emp_no      INT             NOT NULL,
     birth_date  DATE            NOT NULL,
     first_name  VARCHAR(14)     NOT NULL,
@@ -19,14 +19,14 @@ CREATE TABLE employees (
     PRIMARY KEY (emp_no)
 );
 
-CREATE TABLE departments (
+CREATE TABLE IF NOT EXISTS emp.departments (
     dept_no     CHAR(4)         NOT NULL,
     dept_name   VARCHAR(40)     NOT NULL,
     PRIMARY KEY (dept_no),
     UNIQUE   	(dept_name)
 );
 
-CREATE TABLE dept_manager (
+CREATE TABLE IF NOT EXISTS emp.dept_manager (
    dept_no      CHAR(4)         NOT NULL,
    emp_no       INT             NOT NULL,
    from_date    DATE            NOT NULL,
@@ -36,9 +36,9 @@ CREATE TABLE dept_manager (
    PRIMARY KEY (emp_no,dept_no)
 ); 
 
-CREATE INDEX dept_manager_dept_no_idx ON dept_manager(dept_no);
+CREATE INDEX emp.dept_manager_dept_no_idx ON dept_manager(dept_no);
 
-CREATE TABLE dept_emp (
+CREATE TABLE IF NOT EXISTS emp.dept_emp (
     emp_no      INT             NOT NULL,
     dept_no     CHAR(4)         NOT NULL,
     from_date   DATE            NOT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE dept_emp (
     PRIMARY KEY (emp_no,dept_no)
 );
 
-CREATE INDEX dept_emp_dept_no_idx ON dept_emp(dept_no);
+CREATE INDEX emp.dept_emp_dept_no_idx ON dept_emp(dept_no);
 
-CREATE TABLE titles (
+CREATE TABLE IF NOT EXISTS emp.titles (
     emp_no      INT             NOT NULL,
     title       VARCHAR(50)     NOT NULL,
     from_date   DATE            NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE titles (
 ); 
 
 
-CREATE TABLE salaries (
+CREATE TABLE IF NOT EXISTS emp.salaries (
     emp_no      INT             NOT NULL,
     salary      INT             NOT NULL,
     from_date   DATE            NOT NULL,

@@ -14,22 +14,18 @@ spring:
     url: jdbc:postgresql://${POSTGRESQL_SERVICE_NAME}:${POSTGRESQL_PORT}/${POSTGRESQL_DB_NAME}
     password: ${POSTGRESQL_PASSWORD}
     username: ${POSTGRESQL_USER}
+    hikari:
+      schema: emp
 
   flyway:
     sql-migration-prefix: V
-    default-schema: EMP
     schemas:
-      - EMP
+      - emp
     create-schemas: true
   jpa:
     show-sql: true
     database: postgresql
     generate-ddl: false
-    properties:
-      hibernate.default_schema: EMP
     hibernate:
-      format_sql: true
-      generate-ddl: false
-      dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: none
             
