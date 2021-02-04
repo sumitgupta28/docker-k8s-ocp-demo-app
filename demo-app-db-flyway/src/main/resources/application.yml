@@ -17,6 +17,10 @@ spring:
 
   flyway:
     sql-migration-prefix: V
+    default-schema: EMP
+    schemas:
+      - EMP
+    create-schemas: true
   jpa:
     show-sql: true
     database: postgresql
