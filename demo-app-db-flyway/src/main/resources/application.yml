@@ -25,6 +25,8 @@ spring:
     show-sql: true
     database: postgresql
     generate-ddl: false
+    properties:
+      hibernate.default_schema: EMP
     hibernate:
       format_sql: true
       generate-ddl: false
