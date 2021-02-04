@@ -1,3 +1,4 @@
+CREATE SCHEMA EMP;
 
 CREATE TABLE EMP.TEST_EMP (
         id int4 not null,
