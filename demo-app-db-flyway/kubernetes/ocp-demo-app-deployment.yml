@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ocp-demo-app-db
-        image: sumitgupta28/ocp-demo-app-db:latest
+        image: sumitgupta28/demo-app-fly-way:latest
         ports:
         - containerPort: 8080
         env:
