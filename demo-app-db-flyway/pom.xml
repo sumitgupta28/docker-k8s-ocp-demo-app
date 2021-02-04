@@ -9,7 +9,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>ocp-demo-app-db</artifactId>
+	<artifactId>demo-app-db-flyway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ocp-demo-app-db</name>
 	<description>ocp-demo-app-db</description>
