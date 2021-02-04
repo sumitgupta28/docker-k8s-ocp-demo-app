@@ -1,5 +1,5 @@
 
-CREATE TABLE TEST_EMP (
+CREATE TABLE EMP.TEST_EMP (
         id int4 not null,
         email_id varchar(255),
         first_name varchar(255),
