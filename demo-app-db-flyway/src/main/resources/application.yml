@@ -1,0 +1,29 @@
+logging.level:
+  org.springframework.boot.web: WARN
+  org.springframework.boot.context: WARN
+  org.springframework.web: WARN
+  org.springframework.orm: WARN
+  org.springframework.core: WARN
+  org.springframework.jmx: WARN
+  org.hibernate: WARN
+  org.apache.catalina: WARN
+  org.flywaydb: DEBUG
+
+spring:  
+  datasource:
+    url: jdbc:postgresql://${POSTGRESQL_SERVICE_NAME}:${POSTGRESQL_PORT}/${POSTGRESQL_DB_NAME}
+    password: ${POSTGRESQL_PASSWORD}
+    username: ${POSTGRESQL_USER}
+
+  flyway:
+    sql-migration-prefix: V
+  jpa:
+    show-sql: true
+    database: postgresql
+    generate-ddl: false
+    hibernate:
+      format_sql: true
+      generate-ddl: false
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: none
+            
