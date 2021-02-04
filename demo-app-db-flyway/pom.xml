@@ -11,8 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>demo-app-db-flyway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ocp-demo-app-db</name>
-	<description>ocp-demo-app-db</description>
+	<name>demo-app-db-flyway</name>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -88,4 +87,5 @@
 		</plugins>
 	</build>
 
+	<description>demo-app-db-flyway</description>
 </project>
