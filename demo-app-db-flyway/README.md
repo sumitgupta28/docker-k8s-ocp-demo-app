@@ -1,4 +1,4 @@
-# OCP Demo APP
+# Demo APP with flyway
 
 
 *	this is simple application with curd api's for employee model.

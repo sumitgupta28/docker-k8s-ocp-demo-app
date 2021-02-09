@@ -17,6 +17,12 @@ spec:
         image: sumitgupta28/demo-app-fly-way:latest
         ports:
         - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: ocp-demo-app-db
+          initialDelaySeconds: 30
+          timeoutSeconds: 1        
         env:
           - name: POSTGRESQL_DB_NAME
             valueFrom: 

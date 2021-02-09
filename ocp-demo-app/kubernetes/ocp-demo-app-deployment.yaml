@@ -19,7 +19,7 @@ spec:
         - containerPort: 8080
         livenessProbe:
           httpGet:
-            path: /api/hello
+            path: /actuator/health
             port: ocp-demo-app
           initialDelaySeconds: 30
           timeoutSeconds: 1
