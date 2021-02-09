@@ -1,6 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS emp;
-
-CREATE TABLE IF NOT EXISTS emp.EMPLOYEE (
+CREATE TABLE IF NOT EXISTS EMPLOYEE (
         id int4 not null,
         email_id varchar(255),
         first_name varchar(255),

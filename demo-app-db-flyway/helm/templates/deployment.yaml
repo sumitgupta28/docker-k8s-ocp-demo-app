@@ -35,18 +35,18 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            initialDelaySeconds: 20
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            initialDelaySeconds: 20
-            httpGet:
-              path: /
-              port: http
+          #livenessProbe:
+            #initialDelaySeconds: 20
+            #httpGet:
+              #path: /
+              #port: http
+          #readinessProbe:
+            #initialDelaySeconds: 20
+            #httpGet:
+              #path: /
+              #port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
@@ -57,9 +57,9 @@ spec:
             - name: POSTGRESQL_DB_NAME
               value: {{ .Values.postgresql.postgresqlDatabase }}
             - name: POSTGRESQL_SERVICE_NAME
-              value: {{ include "demo-app-fly-way.postgresql.service" . }}
+              value: {{ include "demo-app-db-fly-way.postgresql.service" . }}
             - name: POSTGRESQL_PORT
-              value: 5432
+              value: "5432"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

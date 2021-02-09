@@ -14,13 +14,10 @@ spring:
     url: jdbc:postgresql://${POSTGRESQL_SERVICE_NAME}:${POSTGRESQL_PORT}/${POSTGRESQL_DB_NAME}
     password: ${POSTGRESQL_PASSWORD}
     username: ${POSTGRESQL_USER}
-    hikari:
-      schema: emp
 
   flyway:
     sql-migration-prefix: V
-    schemas:
-      - emp
+
     create-schemas: true
   jpa:
     show-sql: true

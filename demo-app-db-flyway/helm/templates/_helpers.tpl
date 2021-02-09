@@ -60,3 +60,19 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Create the name of the postgresql secret to use
+*/}}
+{{- define "demo-app-db-fly-way.postgresql.secret" -}}
+{{- printf "%s-%s" .Release.Name .Values.postgresql.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+
+{{/*
+Create the name of the Service Name to use
+*/}}
+{{- define "demo-app-db-fly-way.postgresql.service" -}}
+{{- printf "%s-%s" .Release.Name .Values.postgresql.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
