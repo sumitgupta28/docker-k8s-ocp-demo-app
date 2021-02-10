@@ -19,7 +19,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("om.ocp.demo.kafka.controller")).paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.ocp.demo.kafka.controller")).paths(PathSelectors.any())
 				.build().apiInfo(apiEndPointsInfo());
 	}
 
