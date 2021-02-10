@@ -1,11 +1,11 @@
-# Default values for kafka-demo-app.
+# Default values for kafka-sync-app.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 3
 
 image:
-  repository: sumitgupta28/ocp-demo-app-kafka
+  repository: sumitgupta28/ocp-demo-app-kafka-sync
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
