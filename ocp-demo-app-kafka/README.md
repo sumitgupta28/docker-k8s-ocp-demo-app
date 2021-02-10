@@ -85,8 +85,6 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-kafka and run below comma
 
 * 	Before running this , you would like to replace the **localhost** with your ip address. 
 
-	$ sed -i 's/localhost|X.X.X.X/g'
-
 *	Now lets **create/build** image for ocp-demo-app-kafka
 
 	$ docker-compose build

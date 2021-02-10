@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ocp-demo-app-db.fullname" . }}
+  name: {{ include "kafka-demo-app.fullname" . }}
   labels:
-    {{- include "ocp-demo-app-db.labels" . | nindent 4 }}
+    {{- include "kafka-demo-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "ocp-demo-app-db.selectorLabels" . | nindent 6 }}
+      {{- include "kafka-demo-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,20 +18,20 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "ocp-demo-app-db.selectorLabels" . | nindent 8 }}
+        {{- include "kafka-demo-app.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ocp-demo-app-db.serviceAccountName" . }}
+      serviceAccountName: {{ include "kafka-demo-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -40,15 +40,9 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            - name: POSTGRESQL_USER
-              value: {{ .Values.postgresql.postgresqlUsername }}
-            - name: POSTGRESQL_PASSWORD
-              value: {{ .Values.postgresql.postgresqlPassword }}
-            - name: POSTGRESQL_DB_NAME
-              value: {{ .Values.postgresql.postgresqlDatabase }}
-            - name: POSTGRESQL_SERVICE_NAME
-              value: {{ include "ocp-demo-app-db.postgresql.service" . }}
-      
+            - name: KAFKA_ENDPOINT
+              value: {{ include "kafka-demo-app.kafka.service" . }}:{{ .Values.kafka.service.port  }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
