@@ -1,7 +1,7 @@
 # Demo APP with flyway
 
 
-*	this is simple application with curd api's for employee model.
+*	This is simple application with curd api's for employee model.
 
 	```
 	  {
@@ -17,6 +17,7 @@
 
 
 *	This application is using **postgresql as database**.
+* 	we will use fly-way as db migration tool.
 
 
 
@@ -42,13 +43,12 @@ Compose has commands for managing the whole lifecycle of your application:
 *	Stream the log output of running services
 *	Run a one-off command on a service
 
-Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
+Make sure you are at folder /demo-app-db-flyway and run below command
 
 *   **build images**, this command will use the **DockerFile** to first create spring boot jar then build the image 
 * 	This command will use the default file name **docker-compose.yml** 
 * 	Here is the content of docker-compose.yml
 
-	```
 	version: '3.3'
 	services:
 	  postgresql:
@@ -59,9 +59,9 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 	     - POSTGRES_USER=postgresql_user
 	     - POSTGRES_PASSWORD=postgresql_password
 	  
-	  ocp-demo-app-db:
+	  demo-app-db-fly-way:
 	    build: .
-	    container_name: ocp-demo-app-db
+	    container_name: demo-app-db-fly-way
 	    ports:
 	      - 8080:8080
 	    depends_on:
@@ -71,34 +71,43 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 	      - POSTGRESQL_USER=postgresql_user
 	      - POSTGRESQL_PASSWORD=postgresql_password
 	      - POSTGRESQL_SERVICE_NAME=postgresql
-        ```
+	      - POSTGRESQL_PORT=5432
+		
 
 
-*	Now lets **create/build** image for ocp-demo-app-db
+*	Now lets **create/build** image for demo-app-db-flyway
 
-	$ docker-compose build
+		$ docker-compose build
 	
 	
-* 	this command will create image for ocp-demo-app-db and you can verify this with docker images comamnd
+* 	this command will create image for demo-app-db-flyway and you can verify this with docker images comamnd
 
-	$ docker images
-	
-	
-![Docker-compose build](images/compose-build.JPG) 
+
+		$ docker images
+		REPOSITORY                                   TAG                                              IMAGE ID            CREATED             SIZE
+		demo-app-db-flyway_demo-app-db-fly-way       latest                                           ab11d85d4436        3 minutes ago       316MB
 	
 *   **run the application**, use below command to run the application
 
 
-	$ docker-compose up -d
-
-* 	This will also create a default network
-
-![Docker-compose build](images/compose-up.JPG) 	
-
-
-* 	here are the process,containers & images in use by docker-compose
-
-![Docker-compose build](images/compose-all.JPG) 	
+		$ docker-compose ps
+		Name   Command   State   Ports
+		------------------------------
+		
+		$ docker-compose up -d
+		Creating postgresql ... done
+		Creating demo-app-db-fly-way ... done
+		
+		$ docker-compose ps
+		       Name                      Command               State           Ports
+		-------------------------------------------------------------------------------------
+		demo-app-db-fly-way   java -jar /usr/app/demo-ap ...   Up      0.0.0.0:8080->8080/tcp
+		postgresql            docker-entrypoint.sh postgres    Up      5432/tcp
+			
+		$ docker images
+		REPOSITORY                                   TAG                                              IMAGE ID            CREATED             SIZE
+		demo-app-db-flyway_demo-app-db-fly-way       latest                                           ab11d85d4436        8 minutes ago       316MB
+		postgres                                     13.1-alpine                                      8c6053d81a45        12 days ago         159MB
 
 
 # Kubernetes
@@ -108,13 +117,13 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 
 *	use below commands to create image and tag and push to docker hub
 
-*	go to folder /ocp-demo-app/ocp-demo-app-db
+*	go to folder /demo-app-db-flyway
 
 *	build image with required tag
 
-	$ docker build . -t sumitgupta28/ocp-demo-app-db
+	$ docker build . -t sumitgupta28/demo-app-db-flyway
 	
-*	this will create docker image with tag	**sumitgupta28/ocp-demo-app-db:latest**
+*	this will create docker image with tag	**sumitgupta28/demo-app-db-flyway:latest**
 
 *	docker login
 	
@@ -122,7 +131,7 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 
 *	docker push
 
-	$ docker push sumitgupta28/ocp-demo-app-db
+	$ docker push sumitgupta28/demo-app-db-flyway
 	
 	
 ![Docker Push](images/docker-push.JPG) 
@@ -131,12 +140,12 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 
 
 
-*	go to folder **/ocp-demo-app/ocp-demo-app-db/kubernetes** and run below command
+*	go to folder **/ocp-demo-app/demo-app-db-flyway/kubernetes** and run below command
 
 	```
 	$ kubectl apply -f .
-	deployment.apps/ocp-demo-app-db created
-	service/ocp-demo-app-db created
+	deployment.apps/demo-app-db-flyway created
+	service/demo-app-db-flyway created
 	configmap/postgres-configuration created
 	service/postgresql created
 	statefulset.apps/postgres-statefulset created
@@ -144,7 +153,7 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 	persistentvolumeclaim/postgres-pv-claim created
 	```
 
-![ocp-demo-app](images/ocp-demo-app-db.png) 
+![ocp-demo-app](images/demo-app-db-flyway.png) 
 
 
 *	This command will execute all the yml files under the kubernetes folder and create below kubernetes objects 
@@ -152,20 +161,20 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 	```
 	$ kubectl get all
 	NAME                                   READY   STATUS    RESTARTS   AGE
-	pod/ocp-demo-app-db-776db59bf4-845dx   1/1     Running   0          24m
-	pod/ocp-demo-app-db-776db59bf4-gmvr8   1/1     Running   0          24m
-	pod/ocp-demo-app-db-776db59bf4-ltnrh   1/1     Running   0          24m
+	pod/demo-app-db-flyway-776db59bf4-845dx   1/1     Running   0          24m
+	pod/demo-app-db-flyway-776db59bf4-gmvr8   1/1     Running   0          24m
+	pod/demo-app-db-flyway-776db59bf4-ltnrh   1/1     Running   0          24m
 	pod/postgres-statefulset-0             1/1     Running   0          26m
 	
 	NAME                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-	service/ocp-demo-app-db   NodePort    10.110.127.32   <none>        8080:30080/TCP   14m
+	service/demo-app-db-flyway   NodePort    10.110.127.32   <none>        8080:30080/TCP   14m
 	service/postgresql        NodePort    10.98.240.12    <none>        5432:32760/TCP   26m
 	
 	NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
-	deployment.apps/ocp-demo-app-db   3/3     3            3           24m
+	deployment.apps/demo-app-db-flyway   3/3     3            3           24m
 	
 	NAME                                         DESIRED   CURRENT   READY   AGE
-	replicaset.apps/ocp-demo-app-db-776db59bf4   3         3         3       24m
+	replicaset.apps/demo-app-db-flyway-776db59bf4   3         3         3       24m
 	
 	NAME                                    READY   AGE
 	statefulset.apps/postgres-statefulset   1/1     26m
@@ -182,9 +191,9 @@ Make sure you are at folder /ocp-demo-app/ocp-demo-app-db and run below command
 
 *	**service/postgresql** - postgre-sql exposed as postgresql service name
 
-* 	**deployment.apps/ocp-demo-app-db** - This is deployment for **sumitgupta28/ocp-demo-app-db:latest** image with 3 replicas
+* 	**deployment.apps/demo-app-db-flyway** - This is deployment for **sumitgupta28/demo-app-db-flyway:latest** image with 3 replicas
 
-*	**service/ocp-demo-app-db** - This is a service for ocp-demo-app-db deployemnt.
+*	**service/demo-app-db-flyway** - This is a service for demo-app-db-flyway deployemnt.
 
 *	application can be accessible as http://<<hostname>>:30080/swagger-ui.html
 

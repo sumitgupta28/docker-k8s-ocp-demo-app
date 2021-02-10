@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ocp.demo.kafka.producer.KafkaProducer;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping(value = "/kafka")
+@Api(description = "Set of endpoints for sending Message to Kafka Broker.")
 public class KafkaController {
 
 	private final KafkaProducer producer;
@@ -20,7 +25,9 @@ public class KafkaController {
 	}
 
 	@GetMapping(value = "/publish/{message}")
-	public String sendMessageToKafkaTopic(@PathVariable("message") String message) {
+	@ApiOperation("send {message} to Kakfa Broker} .. "
+			+ "***Post successful Response Please check Server logs to validate if its received***")
+	public String sendMessageToKafkaTopic(@ApiParam("Message to be Published") @PathVariable("message") String message) {
 		this.producer.sendMessage(message);
 		return "Message sent! check logs!";
 	}
