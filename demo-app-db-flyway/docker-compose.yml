@@ -8,9 +8,9 @@ services:
      - POSTGRES_USER=postgresql_user
      - POSTGRES_PASSWORD=postgresql_password
   
-  ocp-demo-app-db:
+  demo-app-db-fly-way:
     build: .
-    container_name: ocp-demo-app-db-fly-way
+    container_name: demo-app-db-fly-way
     ports:
       - 8080:8080
     depends_on:
