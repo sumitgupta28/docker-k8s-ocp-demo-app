@@ -20,3 +20,5 @@ services:
       - POSTGRESQL_USER=postgresql_user
       - POSTGRESQL_PASSWORD=postgresql_password
       - POSTGRESQL_SERVICE_NAME=postgresql
+      - POSTGRESQL_PORT=5432
+      

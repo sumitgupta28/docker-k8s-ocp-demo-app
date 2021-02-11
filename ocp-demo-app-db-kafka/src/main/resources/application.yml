@@ -1,7 +1,8 @@
 spring:  
     
   datasource:
-    url: jdbc:postgresql://postgresql:5432/${POSTGRESQL_DB_NAME}
+    #url: jdbc:postgresql://postgresql:5432/${POSTGRESQL_DB_NAME}
+    url: jdbc:postgresql://${POSTGRESQL_SERVICE_NAME}:${POSTGRESQL_PORT}/${POSTGRESQL_DB_NAME}
     password: ${POSTGRESQL_USER}
     username: ${POSTGRESQL_PASSWORD}
 
@@ -17,13 +18,13 @@ spring:
     
   kafka:
     consumer:
-      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      bootstrap-servers: ${KAFKA_ENDPOINT}
       group-id: group_id
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
-      bootstrap-servers: my-cluster-kafka-bootstrap:9092
+      bootstrap-servers: ${KAFKA_ENDPOINT}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
    

@@ -19,3 +19,4 @@ services:
       - POSTGRESQL_DB_NAME=sample_database
       - POSTGRESQL_USER=postgresql_user
       - POSTGRESQL_PASSWORD=postgresql_password
+      - POSTGRESQL_PORT=5432

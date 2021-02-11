@@ -8,3 +8,4 @@ data:
   POSTGRES_DB: awesomedb
   POSTGRES_USER: amazinguser
   POSTGRES_PASSWORD: perfectpassword
+  POSTGRESQL_PORT: "5432"
