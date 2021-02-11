@@ -3,8 +3,8 @@ spring:
   datasource:
     #url: jdbc:postgresql://postgresql:5432/${POSTGRESQL_DB_NAME}
     url: jdbc:postgresql://${POSTGRESQL_SERVICE_NAME}:${POSTGRESQL_PORT}/${POSTGRESQL_DB_NAME}
-    password: ${POSTGRESQL_USER}
-    username: ${POSTGRESQL_PASSWORD}
+    password: ${POSTGRESQL_PASSWORD}
+    username: ${POSTGRESQL_USER}
 
   jpa:
     properties:
