@@ -9,4 +9,4 @@ data:
   POSTGRES_USER: amazinguser
   POSTGRES_PASSWORD: perfectpassword
   POSTGRESQL_SERVICE_NAME: postgresql
-  
+  POSTGRESQL_PORT: "5432"  

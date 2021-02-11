@@ -48,6 +48,8 @@ spec:
               value: {{ .Values.postgresql.postgresqlDatabase }}
             - name: POSTGRESQL_SERVICE_NAME
               value: {{ include "demo-app-db-kafka.postgresql.service" . }}
+            - name: POSTGRESQL_PORT
+              value: {{ Values.postgresql.service.port }}
               
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

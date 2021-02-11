@@ -13,20 +13,3 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/var/data"
-
----
-
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: postgres-pv-claim
-  labels:
-    app: postgres
-spec:
-  storageClassName: manual
-  capacity:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500M

@@ -48,6 +48,8 @@ spec:
               value: {{ .Values.postgresql.postgresqlDatabase }}
             - name: POSTGRESQL_SERVICE_NAME
               value: {{ include "ocp-demo-app-db.postgresql.service" . }}
+            - name: POSTGRESQL_PORT
+              value: {{ Values.postgresql.service.port }}
       
       {{- with .Values.nodeSelector }}
       nodeSelector:

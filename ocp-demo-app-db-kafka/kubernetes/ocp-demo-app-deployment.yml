@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ocp-demo-app-db
+  name: ocp-demo-app-db-kafka
 spec:
   selector:
     matchLabels:
-      app: ocp-demo-app-db
+      app: ocp-demo-app-db-kafka
   replicas: 3
   template:
     metadata:
       labels:
-        app: ocp-demo-app-db
+        app: ocp-demo-app-db-kafka
     spec:
       containers:
-      - name: ocp-demo-app-db
-        image: sumitgupta28/ocp-demo-app-db-kafka:latest
+      - name: ocp-demo-app-db-kafka
+        image: sumitgupta28/ocp-demo-app-db-kafka-kafka:latest
         ports:
         - containerPort: 8080
         env:

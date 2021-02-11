@@ -59,7 +59,7 @@ spec:
             - name: POSTGRESQL_SERVICE_NAME
               value: {{ include "demo-app-db-fly-way.postgresql.service" . }}
             - name: POSTGRESQL_PORT
-              value: "5432"
+              value: {{ Values.postgresql.service.port }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ocp-demo-app-db
+  name: demo-app-fly-way
 spec:
   selector:
     matchLabels:
-      app: ocp-demo-app-db
+      app: demo-app-fly-way
   replicas: 3
   template:
     metadata:
       labels:
-        app: ocp-demo-app-db
+        app: demo-app-fly-way
     spec:
       containers:
-      - name: ocp-demo-app-db
+      - name: demo-app-fly-way
         image: sumitgupta28/demo-app-fly-way:latest
         ports:
         - containerPort: 8080
         livenessProbe:
           httpGet:
             path: /actuator/health
-            port: ocp-demo-app-db
+            port: demo-app-fly-way
           initialDelaySeconds: 30
           timeoutSeconds: 1        
         env:
