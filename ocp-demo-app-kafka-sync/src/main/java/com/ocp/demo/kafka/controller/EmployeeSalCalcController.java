@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutionException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.internals.RecordHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/emp")
 @Api(description = "Set of endpoints for Retrieving employee Details.")
 public class EmployeeSalCalcController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeSalCalcController.class);
+
 
 	private ReplyingKafkaTemplate<String, Employee, EmployeeResult> replyingKafkaTemplate;
 
@@ -60,7 +65,7 @@ public class EmployeeSalCalcController {
 		SendResult<String, Employee> sendResult = sendAndReceive.getSendFuture().get();
 		
 		//print all headers
-		sendResult.getProducerRecord().headers().forEach(header -> System.out.println(header.key() + ":" + header.value().toString()));
+		sendResult.getProducerRecord().headers().forEach(header -> LOGGER.debug(header.key() + ":" + header.value().toString()));
 		
 		// get consumer record
 		ConsumerRecord<String, EmployeeResult> consumerRecord = sendAndReceive.get();

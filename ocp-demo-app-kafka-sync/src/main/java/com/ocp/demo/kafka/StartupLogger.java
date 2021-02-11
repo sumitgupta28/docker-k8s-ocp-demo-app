@@ -1,4 +1,4 @@
-package com.fsd.employee;
+package com.ocp.demo.kafka;
 
 import java.util.Arrays;
 import java.util.stream.StreamSupport;
