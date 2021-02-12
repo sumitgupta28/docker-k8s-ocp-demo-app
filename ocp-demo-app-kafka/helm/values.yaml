@@ -86,4 +86,4 @@ kafka:
   nameOverride: kafka
   autoCreateTopicsEnable: true
   persistence:
-    enabled: true
+    enabled: false
