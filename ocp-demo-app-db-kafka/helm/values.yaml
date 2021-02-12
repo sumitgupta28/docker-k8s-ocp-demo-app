@@ -85,6 +85,13 @@ kafka:
   autoCreateTopicsEnable: true
   persistence:
     enabled: false
+## zookeeper properties.
+zookeeper:
+  enabled: true
+  nameOverride: zookeeper
+  persistence:
+    enabled: false
+
  ## Postgresql properties.
 postgresql:
   enabled: true
