@@ -1,0 +1,43 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "demo-app-db-kafka.fullname" . }}-db-volume1
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/db-data"
+    
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "demo-app-db-kafka.fullname" . }}-db-volume2
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/db-data"
+    
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "demo-app-db-kafka.fullname" . }}-db-volume3
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/db-data"    
