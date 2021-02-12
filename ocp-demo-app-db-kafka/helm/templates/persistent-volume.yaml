@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/db-data1"
+    path: "/mnt/data1"
     
 ---
 kind: PersistentVolume
@@ -25,7 +25,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/db-data2"
+    path: "/mnt/data2"
     
 ---
 kind: PersistentVolume
@@ -40,4 +40,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/db-data3"    
+    path: "/mnt/data3"    
