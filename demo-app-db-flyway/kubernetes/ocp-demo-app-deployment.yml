@@ -12,6 +12,10 @@ spec:
       labels:
         app: demo-app-fly-way
     spec:
+      initContainers:
+      - name: init-db-service
+        image: busybox:1.28
+        command: ['sh', '-c', "until nslookup postgresql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for postgresql; sleep 2; done"]
       containers:
       - name: demo-app-fly-way
         image: sumitgupta28/demo-app-fly-way:latest
