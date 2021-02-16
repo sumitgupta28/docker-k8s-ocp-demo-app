@@ -42,4 +42,9 @@ spec:
                 name: postgres-configuration        
                 key: POSTGRESQL_SERVICE_NAME        
                 
+          - name: POSTGRESQL_PORT
+            valueFrom: 
+              configMapKeyRef:
+                name: postgres-configuration        
+                key: POSTGRESQL_PORT        
                 
