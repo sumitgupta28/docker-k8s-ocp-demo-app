@@ -12,6 +12,10 @@ spec:
       labels:
         app: ocp-demo-app-db
     spec:
+      initContainers:
+      - name: init-db-service
+        image: busybox:1.28
+        command: ['sh', '-c', "until nslookup postgresql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for postgresql; sleep 2; done"]
       containers:
       - name: ocp-demo-app-db
         image: sumitgupta28/ocp-demo-app-db:latest
