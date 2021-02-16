@@ -21,7 +21,7 @@ spec:
         command: ['sh', '-c', "until nslookup kafka-ip-service.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for kafka-ip-service; sleep 2; done"]
       containers:
       - name: ocp-demo-app-db-kafka
-        image: sumitgupta28/ocp-demo-app-db-kafka-kafka:latest
+        image: sumitgupta28/ocp-demo-app-db-kafka:latest
         ports:
         - containerPort: 8080
         env:
@@ -30,25 +30,26 @@ spec:
               configMapKeyRef:
                 name: postgres-configuration
                 key: POSTGRES_DB        
-                
           - name: POSTGRESQL_USER
             valueFrom: 
               configMapKeyRef:
                 name: postgres-configuration        
                 key: POSTGRES_USER        
-                
           - name: POSTGRESQL_PASSWORD
             valueFrom: 
               configMapKeyRef:
                 name: postgres-configuration        
                 key: POSTGRES_PASSWORD        
-
+          - name: POSTGRESQL_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: postgres-configuration        
+                key: POSTGRESQL_SERVICE_NAME        
           - name: POSTGRESQL_PORT
             valueFrom: 
               configMapKeyRef:
                 name: postgres-configuration        
                 key: POSTGRESQL_PORT        
-
           - name: KAFKA_ENDPOINT
             value: kafka-ip-service:9092       
                 
