@@ -32,7 +32,7 @@ public class HelloService {
 			@ApiResponse(code = 500, message = "Some Sample Message") })
 	// @formatter:on
 	public ResponseEntity<String> defaultService() throws UnknownHostException {
-		return ResponseEntity.ok().body("Response from HostName : "+InetAddress.getLocalHost().getHostName() + "-"+System.getenv("HOSTNAME"));
+		return ResponseEntity.ok().body("Response from HostName : "+InetAddress.getLocalHost().getHostName());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/api/health")
