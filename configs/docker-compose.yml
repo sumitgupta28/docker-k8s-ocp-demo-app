@@ -7,6 +7,6 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - /var/jenkins_home:/var/jenkins_home
-            - $(which docker):/usr/bin/docker
+            - /usr/local/bin/docker:/usr/bin/docker
         ports:
             - 8080:8080

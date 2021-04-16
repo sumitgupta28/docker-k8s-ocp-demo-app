@@ -1,14 +1,14 @@
 package com.example.demo.controller;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,19 +22,14 @@ import io.swagger.annotations.ResponseHeader;
 @Api(description = "Set of endpoints for OCP Demo APP.")
 public class HelloService {
 
+	@Value("${app.version}")
+	String appVersion;
 	
 	@RequestMapping(method = RequestMethod.GET, path = "")
-	@ApiOperation(value = "Running hostname", notes = "Running hostname")
-	// @formatter:off
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Some Sample Message"),
-			@ApiResponse(code = 404, message = "Some Sample Message"),
-			@ApiResponse(code = 400, message = "Some Sample Message"),
-			@ApiResponse(code = 500, message = "Some Sample Message") })
-	// @formatter:on
 	public ResponseEntity<String> defaultService() throws UnknownHostException {
-		return ResponseEntity.ok().body("Response from HostName : "+InetAddress.getLocalHost().getHostName());
+		return ResponseEntity.ok().body("App is Healthy[Default Service] : "+ appVersion + ", ["+ InetAddress.getLocalHost().getHostName() + "]");
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, path = "/api/health")
 	@ApiOperation(value = "Return 200 Healthy Response", notes = "Return 200 Healthy Response")
 	// @formatter:off
@@ -43,10 +38,11 @@ public class HelloService {
 			@ApiResponse(code = 400, message = "Some Sample Message"),
 			@ApiResponse(code = 500, message = "Some Sample Message") })
 	// @formatter:on
-	public ResponseEntity<String> health() {
-		return ResponseEntity.ok().body("App is Healthy");
+	public ResponseEntity<String> health() throws UnknownHostException {
+		return ResponseEntity.ok().body("Response from HostName : "+ InetAddress.getLocalHost().getHostName() + "App is Healthy : "+ appVersion);
 	}
 	
+
 	@RequestMapping(method = RequestMethod.GET, path = "/api/hello")
 	@ApiOperation(value = "Return Hello OCP", notes = "Return Hello OCP")
 	// @formatter:off
@@ -74,7 +70,7 @@ public class HelloService {
 			@ApiResponse(code = 500, message = "Some Sample Message") })
 	// @formatter:on
 
-	public String helloName(@ApiParam("name.") @PathVariable(value = "name") String name) {
+	public String helloName(@ApiParam("name") @PathVariable(value = "name") String name) {
 		return "hello " + name;
 	}
 }
